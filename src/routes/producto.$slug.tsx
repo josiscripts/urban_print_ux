@@ -15,8 +15,23 @@ const catalogoQuery = queryOptions({ queryKey: ["catalogo"], queryFn: () => getC
 export const Route = createFileRoute("/producto/$slug")({
   loader: async ({ context, params }) => {
     const data = await context.queryClient.ensureQueryData(catalogoQuery);
+
+    // Validación defensiva: verificar que data y products existan
+    if (!data || !data.products || !Array.isArray(data.products)) {
+      console.error(`[Producto.$slug] ERROR: catálogo inválido`, {
+        hasData: !!data,
+        hasProducts: data ? !!data.products : false,
+        isArray: data && data.products ? Array.isArray(data.products) : false,
+      });
+      throw notFound();
+    }
+
+    // Búsqueda normal
     const producto = data.products.find((p) => p.slug === params.slug);
-    if (!producto) throw notFound();
+    if (!producto) {
+      console.warn(`[Producto.$slug] Producto no encontrado: slug="${params.slug}" (total: ${data.products.length})`);
+      throw notFound();
+    }
     return { nombre: producto.name, descripcion: producto.description };
   },
   head: ({ loaderData }) => {

@@ -56,8 +56,22 @@ export const getCatalogo = createServerFn({ method: "GET" }).handler(async () =>
     // Adaptar categorías
     const categorias = adaptarCategoriasWooCommerce(wooCategories, true);
 
+    // Validación defensiva: asegurar que siempre retornamos arrays válidos
+    if (!Array.isArray(productos) || !Array.isArray(categorias)) {
+      console.error(
+        `[Catalog] ERROR CRÍTICO: productos o categorias no son arrays`,
+        {
+          productosType: typeof productos,
+          categoriasType: typeof categorias,
+        }
+      );
+      throw new Error(
+        `[Catalog] Respuesta de WooCommerce inválida (datos no son arrays)`
+      );
+    }
+
     console.log(
-      `[Catalog] Cargados ${productos.length} productos y ${categorias.length} categorías desde WooCommerce`
+      `[Catalog] ✓ Cargados ${productos.length} productos y ${categorias.length} categorías desde WooCommerce`
     );
 
     return {
@@ -66,7 +80,23 @@ export const getCatalogo = createServerFn({ method: "GET" }).handler(async () =>
     };
   } catch (error) {
     const errorMessage = error instanceof Error ? error.message : String(error);
-    console.error(`[Catalog] Error al obtener catálogo de WooCommerce: ${errorMessage}`);
+    const stack = error instanceof Error ? error.stack : "";
+
+    // Log detallado para debugging en Vercel
+    console.error(`[Catalog] ✗ CRÍTICO: Error al obtener catálogo`);
+    console.error(`[Catalog] Error message: ${errorMessage}`);
+    console.error(`[Catalog] Error stack:`, stack);
+
+    // Intentar identificar la causa específica
+    if (errorMessage.includes("Missing environment variable")) {
+      console.error(`[Catalog] ⚠️  CAUSA PROBABLE: Variables de entorno WooCommerce no configuradas`);
+      console.error(`[Catalog] Verifica WOOCOMMERCE_URL, WOOCOMMERCE_CONSUMER_KEY, WOOCOMMERCE_CONSUMER_SECRET`);
+    } else if (errorMessage.includes("401") || errorMessage.includes("403")) {
+      console.error(`[Catalog] ⚠️  CAUSA PROBABLE: Credenciales WooCommerce inválidas o expiradas`);
+    } else if (errorMessage.includes("ECONNREFUSED") || errorMessage.includes("ETIMEDOUT")) {
+      console.error(`[Catalog] ⚠️  CAUSA PROBABLE: WooCommerce no responde (conectividad o URL incorrecta)`);
+    }
+
     throw new Error(
       `No se pudo cargar el catálogo. Error: ${errorMessage}. Por favor, intenta más tarde.`
     );
