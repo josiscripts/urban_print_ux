@@ -11,7 +11,10 @@ export const Route = createFileRoute("/naturhouse")({
           "Material gráfico y personalización para centros Natur House: cartelería, papelería, textil corporativo y campañas de temporada.",
       },
       { property: "og:title", content: "Natur House | Urban Print" },
-      { property: "og:description", content: "Material gráfico y corporativo para centros Natur House." },
+      {
+        property: "og:description",
+        content: "Material gráfico y corporativo para centros Natur House.",
+      },
     ],
   }),
   component: () => (

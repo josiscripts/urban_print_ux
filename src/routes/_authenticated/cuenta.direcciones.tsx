@@ -113,17 +113,17 @@ function DireccionesPage() {
             <option value="facturacion">Facturación</option>
           </select>
         </div>
-        <Campo id="full_name" label="Nombre completo" error={errors['full_name']} />
-        <Campo id="company" label="Empresa (opcional)" error={errors['company']} />
-        <Campo id="street" label="Dirección" error={errors['street']} />
+        <Campo id="full_name" label="Nombre completo" error={errors["full_name"]} />
+        <Campo id="company" label="Empresa (opcional)" error={errors["company"]} />
+        <Campo id="street" label="Dirección" error={errors["street"]} />
         <div className="grid gap-5 sm:grid-cols-3">
-          <Campo id="postal_code" label="Código postal" error={errors['postal_code']} />
-          <Campo id="city" label="Localidad" error={errors['city']} />
-          <Campo id="province" label="Provincia" error={errors['province']} />
+          <Campo id="postal_code" label="Código postal" error={errors["postal_code"]} />
+          <Campo id="city" label="Localidad" error={errors["city"]} />
+          <Campo id="province" label="Provincia" error={errors["province"]} />
         </div>
         <div className="grid gap-5 sm:grid-cols-2">
-          <Campo id="country" label="País" defaultValue="España" error={errors['country']} />
-          <Campo id="phone" label="Teléfono (opcional)" error={errors['phone']} />
+          <Campo id="country" label="País" defaultValue="España" error={errors["country"]} />
+          <Campo id="phone" label="Teléfono (opcional)" error={errors["phone"]} />
         </div>
         <Button type="submit" disabled={save.isPending}>
           {save.isPending ? "Guardando…" : "Guardar dirección"}

@@ -101,7 +101,12 @@ export const CATEGORIAS: NavItem[] = [
       },
       {
         titulo: "Detalles para invitados",
-        extras: ["panuelo-boda", "libro-firmas-personalizado", "recuerdo-evento-marcapaginas", "pegatinas-eventos"],
+        extras: [
+          "panuelo-boda",
+          "libro-firmas-personalizado",
+          "recuerdo-evento-marcapaginas",
+          "pegatinas-eventos",
+        ],
       },
     ],
   },

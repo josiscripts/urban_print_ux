@@ -8,32 +8,23 @@ const catalogoQuery = queryOptions({ queryKey: ["catalogo"], queryFn: () => getC
 export const Route = createFileRoute("/categoria/$slug")({
   loader: async ({ context, params }) => {
     const data = await context.queryClient.ensureQueryData(catalogoQuery);
-
-    // Validación defensiva: verificar que data y categories existan
-    if (!data || !data.categories || !Array.isArray(data.categories)) {
-      console.error(`[Categoria.$slug] ERROR: catálogo inválido`, {
-        hasData: !!data,
-        hasCategories: data ? !!data.categories : false,
-        isArray: data && data.categories ? Array.isArray(data.categories) : false,
-      });
-      throw notFound();
-    }
-
-    // Búsqueda normal
     const categoria = data.categories.find((c) => c.slug === params.slug);
-    if (!categoria) {
-      console.warn(`[Categoria.$slug] Categoría no encontrada: slug="${params.slug}" (total: ${data.categories.length})`);
-      throw notFound();
-    }
+    if (!categoria) throw notFound();
     return { nombre: categoria.name, descripcion: categoria.description };
   },
   head: ({ loaderData }) => {
     if (!loaderData) {
-      return { meta: [{ title: "Categoría no disponible | Urban Print" }, { name: "robots", content: "noindex" }] };
+      return {
+        meta: [
+          { title: "Categoría no disponible | Urban Print" },
+          { name: "robots", content: "noindex" },
+        ],
+      };
     }
     const title = `${loaderData.nombre} | Urban Print`;
     const description =
-      loaderData.descripcion ?? `Productos de ${loaderData.nombre} personalizados en Urban Print, Orihuela.`;
+      loaderData.descripcion ??
+      `Productos de ${loaderData.nombre} personalizados en Urban Print, Orihuela.`;
     return {
       meta: [
         { title },
@@ -104,7 +95,9 @@ function CategoriaPage() {
           )}
 
           {productos.length === 0 ? (
-            <p className="text-muted-foreground">Próximamente nuevos productos en esta categoría.</p>
+            <p className="text-muted-foreground">
+              Próximamente nuevos productos en esta categoría.
+            </p>
           ) : (
             <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
               {productos.map((p) => (

@@ -25,7 +25,10 @@ export default defineTool({
         .eq("slug", parent_slug)
         .maybeSingle();
       if (!parent) {
-        return { content: [{ type: "text", text: `No existe la categoría "${parent_slug}".` }], isError: true };
+        return {
+          content: [{ type: "text", text: `No existe la categoría "${parent_slug}".` }],
+          isError: true,
+        };
       }
       parentId = parent.id;
     }

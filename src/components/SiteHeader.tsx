@@ -4,8 +4,9 @@ import { useQuery } from "@tanstack/react-query";
 import {
   ChevronDown,
   Facebook,
+  Heart,
   Instagram,
-  Mail,
+  LayoutDashboard,
   Menu,
   Search,
   ShoppingCart,
@@ -14,11 +15,14 @@ import {
 } from "lucide-react";
 
 import { getCatalogo, type Categoria, type Producto } from "@/lib/catalog.functions";
-import { CATEGORIAS, EMPRESA, REDES, SERVICIOS, type NavItem } from "@/lib/site";
+import { CATEGORIAS, REDES, type NavItem } from "@/lib/site";
 import { useCart } from "@/lib/cart";
+import { useFavorites } from "@/lib/favorites";
 import { eur } from "@/lib/format";
 import { Button } from "@/components/ui/button";
 import { Logo } from "@/components/Logo";
+import { NaturHouseLink } from "@/components/NaturHouseLink";
+import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 
 type Columna = { titulo: string; slug?: string | undefined; productos: Producto[] };
 type MenuCategoria = { item: NavItem; columnas: Columna[] };
@@ -53,16 +57,20 @@ function buildMenu(categories: Categoria[], products: Producto[]): MenuCategoria
 
 export function SiteHeader() {
   const { count } = useCart();
+  const { items: favorites } = useFavorites();
   const navigate = useNavigate();
   const [query, setQuery] = useState("");
   const [openMenu, setOpenMenu] = useState(false);
   const [openCat, setOpenCat] = useState<string | null>(null);
-  const [mobileCat, setMobileCat] = useState<string | null>(null);
-  const [mobileSub, setMobileSub] = useState<string | null>(null);
+  const [openMobileItem, setOpenMobileItem] = useState<string | null>(null);
+  const [favoritesOpen, setFavoritesOpen] = useState(false);
+  const [compactSearchOpen, setCompactSearchOpen] = useState(false);
+  const [desktopSearchOpen, setDesktopSearchOpen] = useState(false);
+
   const pathname = useRouterState({ select: (s) => s.location.pathname });
   const navRef = useRef<HTMLElement>(null);
   const searchRef = useRef<HTMLInputElement>(null);
-  const mobileSearchRef = useRef<HTMLInputElement>(null);
+  const compactSearchRef = useRef<HTMLInputElement>(null);
 
   const { data } = useQuery({
     queryKey: ["catalogo"],
@@ -73,6 +81,7 @@ export function SiteHeader() {
   useEffect(() => {
     setOpenMenu(false);
     setOpenCat(null);
+    setOpenMobileItem(null);
     setQuery("");
   }, [pathname]);
 
@@ -91,10 +100,7 @@ export function SiteHeader() {
     };
   }, []);
 
-  const menu = useMemo(
-    () => (data ? buildMenu(data.categories, data.products) : []),
-    [data],
-  );
+  const menu = useMemo(() => (data ? buildMenu(data.categories, data.products) : []), [data]);
 
   const productResults = useMemo(() => {
     const term = query.trim().toLowerCase();
@@ -110,6 +116,11 @@ export function SiteHeader() {
 
   const hayResultados = productResults.length > 0 || categoryResults.length > 0;
 
+  const focusCompactSearch = () => {
+    setOpenMenu(false);
+    setCompactSearchOpen(true);
+    window.setTimeout(() => compactSearchRef.current?.focus(), 0);
+  };
 
   const listaResultados = (onPick: () => void) => (
     <>
@@ -149,194 +160,316 @@ export function SiteHeader() {
   );
 
   return (
-    <header className="sticky top-0 z-50 w-full bg-background">
-      <div className="w-full border-b border-border bg-background">
-        <div className="mx-auto grid max-w-7xl grid-cols-[auto_minmax(0,1fr)_auto] items-center gap-4 px-4 py-4">
-          <Link to="/" className="flex shrink-0 items-center" aria-label="Urban Print — Inicio">
-            <Logo background="theme" className="h-7" />
-          </Link>
-
-          <div className="relative hidden min-w-0 md:block">
-            <label htmlFor="buscador" className="sr-only">
-              Buscar productos y categorías
-            </label>
-            <Search className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground" aria-hidden />
-            <input
-              id="buscador"
-              ref={searchRef}
-              value={query}
-              onChange={(e) => setQuery(e.target.value)}
-              placeholder="Buscar productos o categorías…"
-              maxLength={80}
-              className="h-11 w-full border border-input bg-background pr-3 pl-9 text-sm outline-none focus:border-primary"
+    <header className="fixed inset-x-0 top-0 z-50 w-full text-ink-foreground transition-[background-color,border-color,box-shadow,backdrop-filter] duration-300 glass-navbar xl:sticky xl:border-ink-foreground/10 xl:bg-hero-surface/95 xl:shadow-none xl:backdrop-blur-md">
+      <div className="mx-auto grid min-h-16 max-w-[96rem] grid-cols-[minmax(0,1fr)_auto] items-center gap-1.5 px-3 min-[390px]:gap-2 min-[390px]:px-4 sm:min-h-18 sm:gap-3 sm:px-6 xl:hidden">
+        <Link to="/" className="flex min-w-0 items-center" aria-label="Urban Print — Inicio">
+          <Logo
+            background="dark"
+            className="h-auto w-[7.25rem] min-[390px]:w-32 sm:w-auto sm:h-7"
+          />
+        </Link>
+        <div className="flex shrink-0 items-center">
+          <Button
+            variant="ghost"
+            size="icon"
+            aria-label="Buscar"
+            title="Buscar"
+            onClick={focusCompactSearch}
+            className="micro-scale size-10 text-ink-foreground hover:bg-ink-foreground/10 hover:text-primary"
+          >
+            <Search className="size-5" />
+          </Button>
+          <Button
+            variant="ghost"
+            size="icon"
+            aria-label="Favoritos"
+            title="Favoritos"
+            aria-expanded={favoritesOpen}
+            onClick={() => setFavoritesOpen((open) => !open)}
+            className="micro-scale relative size-10 text-ink-foreground hover:bg-ink-foreground/10 hover:text-primary"
+          >
+            <Heart
+              className={`size-5 ${favorites.length > 0 ? "fill-primary text-primary" : ""}`}
             />
-            {hayResultados && (
-              <ul className="absolute top-full right-0 left-0 z-50 max-h-96 overflow-auto border border-border bg-popover shadow-xl">
-                {listaResultados(() => setQuery(""))}
+            {favorites.length > 0 && (
+              <span className="absolute -top-0.5 -right-0.5 grid size-4 place-items-center rounded-full bg-primary text-[10px] font-bold text-primary-foreground">
+                {favorites.length}
+              </span>
+            )}
+          </Button>
+          <Button
+            asChild
+            variant="ghost"
+            size="icon"
+            aria-label="Carrito"
+            className="micro-scale relative size-10 text-ink-foreground hover:bg-ink-foreground/10 hover:text-ink-foreground"
+          >
+            <Link to="/carrito">
+              <ShoppingCart className="size-5" />
+              {count > 0 && (
+                <span className="absolute -top-0.5 -right-0.5 grid size-4 place-items-center rounded-full bg-primary text-[10px] font-bold text-primary-foreground">
+                  {count}
+                </span>
+              )}
+            </Link>
+          </Button>
+          <Button
+            variant="ghost"
+            size="icon"
+            className="size-10 text-ink-foreground hover:bg-ink-foreground/10 hover:text-ink-foreground"
+            aria-label="Abrir menú"
+            onClick={() => setOpenMenu(true)}
+          >
+            <Menu className="size-5" />
+          </Button>
+        </div>
+        <div
+          className={`${compactSearchOpen || query ? "block" : "hidden"} relative col-span-2 min-w-0 pb-3 sm:absolute sm:top-[calc(100%+0.5rem)] sm:right-6 sm:z-50 sm:w-[min(24rem,calc(100vw-3rem))] sm:pb-0`}
+        >
+          <Search
+            className="pointer-events-none absolute top-[1.125rem] left-3 size-4 -translate-y-1/2 text-ink-muted sm:top-1/2"
+            aria-hidden
+          />
+          <input
+            ref={compactSearchRef}
+            value={query}
+            onChange={(event) => setQuery(event.target.value)}
+            placeholder="Buscar productos o categorías..."
+            aria-label="Buscar productos o categorías"
+            className="h-9 w-full rounded-full border border-ink-foreground/10 bg-ink-foreground/10 pr-3 pl-9 text-xs text-ink-foreground outline-none placeholder:text-ink-muted focus:border-primary sm:bg-hero-panel sm:shadow-xl"
+          />
+          {hayResultados && (
+            <ul className="absolute top-[calc(100%-0.25rem)] right-0 left-0 z-50 max-h-72 overflow-auto border border-border bg-popover text-popover-foreground shadow-xl sm:top-[calc(100%+0.5rem)]">
+              {listaResultados(() => {
+                setQuery("");
+                setCompactSearchOpen(false);
+              })}
+            </ul>
+          )}
+        </div>
+        {favoritesOpen && (
+          <div className="absolute top-full right-3 z-50 mt-2 w-[min(18rem,calc(100vw-1.5rem))] border border-border bg-popover p-4 text-popover-foreground shadow-xl min-[390px]:right-4 sm:right-24 xl:hidden">
+            <p className="font-display text-sm uppercase">Favoritos</p>
+            {favorites.length === 0 ? (
+              <p className="mt-2 text-xs text-muted-foreground">
+                Todavía no has guardado productos.
+              </p>
+            ) : (
+              <ul className="mt-2 space-y-2">
+                {favorites.map((item) => (
+                  <li key={item.slug}>
+                    <Link
+                      to="/producto/$slug"
+                      params={{ slug: item.slug }}
+                      onClick={() => setFavoritesOpen(false)}
+                      className="block text-sm hover:text-primary"
+                    >
+                      {item.name}
+                    </Link>
+                  </li>
+                ))}
               </ul>
             )}
           </div>
-
-          <div className="flex shrink-0 items-center gap-1">
-            <Button asChild variant="ghost" size="icon" aria-label="Contacto" title="Contacto" className="micro-scale">
-              <Link to="/contacto">
-                <Mail className="size-5" />
-              </Link>
-            </Button>
-            <a
-              href={REDES.facebook}
-              target="_blank"
-              rel="noreferrer noopener"
-              aria-label="Facebook de Urban Print"
-              className="hidden size-9 place-items-center text-foreground transition-colors hover:text-primary sm:grid lg:hidden"
-            >
-              <Facebook className="size-[18px]" />
-            </a>
-            <a
-              href={REDES.instagram}
-              target="_blank"
-              rel="noreferrer noopener"
-              aria-label="Instagram de Urban Print"
-              className="hidden size-9 place-items-center text-foreground transition-colors hover:text-primary sm:grid lg:hidden"
-            >
-              <Instagram className="size-[18px]" />
-            </a>
-
-            <Button asChild variant="ghost" size="icon" aria-label="Área de cliente" className="micro-scale">
-              <Link to="/cuenta">
-                <User className="size-5" />
-              </Link>
-            </Button>
-            <Button asChild variant="ghost" size="icon" aria-label="Carrito" className="micro-scale relative">
-              <Link to="/carrito">
-                <ShoppingCart className="size-5" />
-                {count > 0 && (
-                  <span className="absolute -top-0.5 -right-0.5 grid size-4 place-items-center rounded-full bg-primary text-[10px] font-bold text-primary-foreground">
-                    {count}
-                  </span>
-                )}
-              </Link>
-            </Button>
-            <Button
-              variant="ghost"
-              size="icon"
-              className="lg:hidden"
-              aria-label="Abrir menú"
-              onClick={() => setOpenMenu((v) => !v)}
-            >
-              {openMenu ? <X className="size-5" /> : <Menu className="size-5" />}
-            </Button>
-          </div>
-        </div>
+        )}
       </div>
 
       <nav
         ref={navRef}
-        aria-label="Catálogo"
-        className="relative hidden w-full border-b border-border bg-ink text-ink-foreground lg:block"
+        aria-label="Navegación principal"
+        className="relative hidden min-h-20 w-full xl:block"
         onMouseLeave={() => setOpenCat(null)}
       >
-        <ul className="mx-auto flex max-w-7xl items-stretch px-4">
-          <li onMouseEnter={() => setOpenCat(null)}>
-            <Link
-              to="/"
-              className="flex h-12 items-center px-3 font-display text-[13px] tracking-wide uppercase transition-colors hover:text-primary xl:px-4 xl:text-sm"
-              activeProps={{ className: "text-primary" }}
-              activeOptions={{ exact: true }}
-            >
-              Inicio
-            </Link>
-          </li>
-          {CATEGORIAS.map((cat) => {
-            const abierto = openCat === cat.slug;
-            return (
-              <li key={cat.slug} className="static" onMouseEnter={() => setOpenCat(cat.slug)}>
-                <Link
-                  to="/categoria/$slug"
-                  params={{ slug: cat.slug }}
-                  aria-expanded={abierto}
-                  onClick={(e) => {
-                    if (!abierto) {
-                      e.preventDefault();
-                      setOpenCat(cat.slug);
-                    }
-                  }}
-                  className={`flex h-12 items-center gap-1 px-3 font-display text-[13px] tracking-wide uppercase transition-colors hover:text-primary xl:px-4 xl:text-sm ${
-                    abierto ? "text-primary" : ""
-                  }`}
-                  activeProps={{ className: "text-primary" }}
-                >
-                  {cat.name}
-                  <ChevronDown className="size-3.5 opacity-70" aria-hidden />
+        <div className="mx-auto grid min-h-20 max-w-[120rem] grid-cols-[10.5rem_minmax(0,1fr)_22rem] items-center gap-5 px-6 2xl:grid-cols-[12rem_minmax(0,1fr)_26rem] 2xl:gap-8 2xl:px-10">
+          <Link to="/" className="flex shrink-0 items-center" aria-label="Urban Print — Inicio">
+            <Logo background="dark" className="h-7 2xl:h-8" />
+          </Link>
+          <ul className="flex min-w-0 items-stretch justify-center gap-0 2xl:gap-1">
+            <li onMouseEnter={() => setOpenCat(null)}>
+              <Link
+                to="/"
+                className="relative flex h-20 items-center px-1.5 font-sans text-[10px] font-semibold tracking-[0.06em] uppercase transition-colors hover:text-primary 2xl:px-2.5 2xl:text-[11px] after:absolute after:right-2 after:bottom-5 after:left-2 after:h-0.5 after:scale-x-0 after:bg-primary after:transition-transform"
+                activeProps={{ className: "text-primary after:scale-x-100" }}
+                activeOptions={{ exact: true }}
+              >
+                Inicio
+              </Link>
+            </li>
+            {CATEGORIAS.map((cat) => {
+              const abierto = openCat === cat.slug;
+              return (
+                <li key={cat.slug} className="static" onMouseEnter={() => setOpenCat(cat.slug)}>
+                  <Link
+                    to="/categoria/$slug"
+                    params={{ slug: cat.slug }}
+                    aria-expanded={abierto}
+                    onClick={(e) => {
+                      if (!abierto) {
+                        e.preventDefault();
+                        setOpenCat(cat.slug);
+                      }
+                    }}
+                    className={`flex h-20 items-center gap-0.5 px-1.5 font-sans text-[10px] font-semibold tracking-[0.04em] uppercase transition-colors hover:text-primary 2xl:px-2.5 2xl:text-[11px] ${
+                      abierto ? "text-primary" : ""
+                    }`}
+                    activeProps={{ className: "text-primary" }}
+                  >
+                    {cat.name}
+                    <ChevronDown className="size-3.5 opacity-70" aria-hidden />
+                  </Link>
+                </li>
+              );
+            })}
+          </ul>
+
+          <div className="relative grid min-w-0 grid-cols-[minmax(0,1fr)_auto] items-center gap-2">
+            <div className="relative z-10 flex h-10 min-w-0 justify-end">
+              <div
+                className={`relative h-10 overflow-visible transition-[width] duration-300 ease-out ${desktopSearchOpen ? "w-96" : "w-10"}`}
+              >
+                {desktopSearchOpen ? (
+                  <>
+                    <label htmlFor="buscador" className="sr-only">
+                      Buscar productos y categorías
+                    </label>
+                    <Search
+                      className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-ink-muted"
+                      aria-hidden
+                    />
+                    <input
+                      id="buscador"
+                      ref={searchRef}
+                      value={query}
+                      onChange={(e) => setQuery(e.target.value)}
+                      placeholder="Buscar productos..."
+                      maxLength={80}
+                      className="h-10 w-full rounded-full border border-ink-foreground/10 bg-ink-foreground/10 pr-9 pl-9 text-xs text-ink-foreground outline-none placeholder:text-ink-muted focus:border-primary"
+                    />
+                    <Button
+                      variant="ghost"
+                      size="icon"
+                      aria-label="Cerrar búsqueda"
+                      title="Cerrar búsqueda"
+                      onClick={() => {
+                        setQuery("");
+                        setDesktopSearchOpen(false);
+                      }}
+                      className="absolute top-1/2 right-0 size-10 -translate-y-1/2 text-ink-muted hover:bg-transparent hover:text-primary"
+                    >
+                      <X className="size-4" />
+                    </Button>
+                  </>
+                ) : (
+                  <Button
+                    variant="ghost"
+                    size="icon"
+                    aria-label="Abrir búsqueda"
+                    title="Buscar"
+                    onClick={() => {
+                      setDesktopSearchOpen(true);
+                      window.setTimeout(() => searchRef.current?.focus(), 0);
+                    }}
+                    className="micro-scale text-ink-foreground hover:bg-ink-foreground/10 hover:text-primary"
+                  >
+                    <Search className="size-5" />
+                  </Button>
+                )}
+                {desktopSearchOpen && hayResultados && (
+                  <ul className="absolute top-[calc(100%+0.5rem)] right-0 left-0 z-50 max-h-96 overflow-auto border border-border bg-popover text-popover-foreground shadow-xl">
+                    {listaResultados(() => {
+                      setQuery("");
+                      setDesktopSearchOpen(false);
+                    })}
+                  </ul>
+                )}
+              </div>
+            </div>
+
+            <div className="relative flex shrink-0 items-center gap-0.5">
+              <Button
+                asChild
+                variant="ghost"
+                size="icon"
+                aria-label="Panel de control"
+                className="micro-scale hidden text-ink-foreground hover:bg-ink-foreground/10 hover:text-ink-foreground lg:inline-flex"
+              >
+                <Link to="/admin">
+                  <LayoutDashboard className="size-5" />
                 </Link>
-              </li>
-            );
-          })}
-          <li className="ml-auto flex items-center gap-1">
-            <a
-              href={REDES.facebook}
-              target="_blank"
-              rel="noreferrer noopener"
-              aria-label="Facebook de Urban Print"
-              className="grid size-9 place-items-center text-ink-foreground transition-colors hover:text-primary"
-            >
-              <Facebook className="size-[18px]" />
-            </a>
-            <a
-              href={REDES.instagram}
-              target="_blank"
-              rel="noreferrer noopener"
-              aria-label="Instagram de Urban Print"
-              className="mr-2 grid size-9 place-items-center text-ink-foreground transition-colors hover:text-primary"
-            >
-              <Instagram className="size-[18px]" />
-            </a>
-
-
-            <span className="group relative my-2 inline-block">
-              <a
-                href={EMPRESA.enlaceExterno.url}
-                target="_blank"
-                rel="noreferrer noopener"
-                className="relative z-50 inline-flex items-center bg-primary px-4 py-2 font-display text-sm tracking-wide text-primary-foreground uppercase transition-colors duration-300 ease-out group-hover:bg-[#4A7C59]"
+              </Button>
+              <Button
+                asChild
+                variant="ghost"
+                size="icon"
+                aria-label="Área de cliente"
+                className="micro-scale text-ink-foreground hover:bg-ink-foreground/10 hover:text-ink-foreground"
               >
-                {EMPRESA.enlaceExterno.name}
-              </a>
-              <svg
-                className="pointer-events-none absolute -top-2 -left-2.5 z-40 size-5 rotate-[-25deg] text-[#9DC183] opacity-0 transition-all duration-300 ease-out group-hover:opacity-100 group-hover:scale-110 group-hover:rotate-[-10deg]"
-                viewBox="0 0 24 24"
-                fill="currentColor"
-                aria-hidden
+                <Link to="/cuenta">
+                  <User className="size-5" />
+                </Link>
+              </Button>
+              <Button
+                variant="ghost"
+                size="icon"
+                aria-label="Favoritos"
+                title="Favoritos"
+                onClick={() => setFavoritesOpen((open) => !open)}
+                className="micro-scale relative text-ink-foreground hover:bg-ink-foreground/10 hover:text-primary"
               >
-                <path d="M12 2C14 5 18 9 19 14C20 18 16 21 12 22C8 21 4 18 5 14C6 9 10 5 12 2ZM12 22L11 24L13 24Z" />
-              </svg>
-              <svg
-                className="pointer-events-none absolute -top-2 -right-2.5 z-40 size-5 rotate-[25deg] text-[#9DC183] opacity-0 transition-all duration-300 ease-out group-hover:opacity-100 group-hover:scale-110 group-hover:rotate-[10deg]"
-                viewBox="0 0 24 24"
-                fill="currentColor"
-                aria-hidden
+                <Heart
+                  className={`size-5 ${favorites.length > 0 ? "fill-primary text-primary" : ""}`}
+                />
+                {favorites.length > 0 && (
+                  <span className="absolute -top-0.5 -right-0.5 grid size-4 place-items-center rounded-full bg-primary text-[10px] font-bold text-primary-foreground">
+                    {favorites.length}
+                  </span>
+                )}
+              </Button>
+              <Button
+                asChild
+                variant="ghost"
+                size="icon"
+                aria-label="Carrito"
+                className="micro-scale relative text-ink-foreground hover:bg-ink-foreground/10 hover:text-ink-foreground"
               >
-                <path d="M12 2C14 5 18 9 19 14C20 18 16 21 12 22C8 21 4 18 5 14C6 9 10 5 12 2ZM12 22L11 24L13 24Z" />
-              </svg>
-              <svg
-                className="pointer-events-none absolute -bottom-2 -left-2.5 z-40 size-5 rotate-[15deg] text-[#9DC183] opacity-0 transition-all duration-300 ease-out group-hover:opacity-100 group-hover:scale-110"
-                viewBox="0 0 24 24"
-                fill="currentColor"
-                aria-hidden
-              >
-                <path d="M12 2C14 5 18 9 19 14C20 18 16 21 12 22C8 21 4 18 5 14C6 9 10 5 12 2ZM12 22L11 24L13 24Z" />
-              </svg>
-              <svg
-                className="pointer-events-none absolute -right-2.5 -bottom-2 z-40 size-5 rotate-[-15deg] text-[#9DC183] opacity-0 transition-all duration-300 ease-out group-hover:opacity-100 group-hover:scale-110"
-                viewBox="0 0 24 24"
-                fill="currentColor"
-                aria-hidden
-              >
-                <path d="M12 2C14 5 18 9 19 14C20 18 16 21 12 22C8 21 4 18 5 14C6 9 10 5 12 2ZM12 22L11 24L13 24Z" />
-              </svg>
-            </span>
-          </li>
-        </ul>
+                <Link to="/carrito">
+                  <ShoppingCart className="size-5" />
+                  {count > 0 && (
+                    <span className="absolute -top-0.5 -right-0.5 grid size-4 place-items-center rounded-full bg-primary text-[10px] font-bold text-primary-foreground">
+                      {count}
+                    </span>
+                  )}
+                </Link>
+              </Button>
+              <NaturHouseLink compact className="ml-1" />
+              {favoritesOpen && (
+                <div className="absolute top-full right-0 mt-2 w-72 border border-border bg-popover p-4 text-popover-foreground shadow-xl">
+                  <p className="font-display text-sm uppercase">Favoritos</p>
+                  {favorites.length === 0 ? (
+                    <p className="mt-2 text-xs text-muted-foreground">
+                      Todavía no has guardado productos.
+                    </p>
+                  ) : (
+                    <ul className="mt-2 space-y-2">
+                      {favorites.map((item) => (
+                        <li key={item.slug}>
+                          <Link
+                            to="/producto/$slug"
+                            params={{ slug: item.slug }}
+                            onClick={() => setFavoritesOpen(false)}
+                            className="block text-sm hover:text-primary"
+                          >
+                            {item.name}
+                          </Link>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                </div>
+              )}
+            </div>
+          </div>
+        </div>
 
         {openCat &&
           (() => {
@@ -394,175 +527,207 @@ export function SiteHeader() {
           })()}
       </nav>
 
-      {openMenu && (
-        <div className="w-full border-b border-border bg-background lg:hidden">
-          <div className="mx-auto max-w-7xl space-y-6 overflow-x-hidden px-4 py-6">
-            <div className="relative">
-              <Search className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground" aria-hidden />
-              <input
-                ref={mobileSearchRef}
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
-                placeholder="Buscar productos o categorías…"
-                aria-label="Buscar productos y categorías"
-                className="h-11 w-full border border-input bg-background pr-3 pl-9 text-sm outline-none focus:border-primary"
-              />
-            </div>
-            {hayResultados && (
-              <ul className="border border-border">{listaResultados(() => setOpenMenu(false))}</ul>
-            )}
-
-            <div>
-              <p className="mb-2 font-display text-xs tracking-widest text-muted-foreground uppercase">
-                Catálogo
-              </p>
-              <ul className="divide-y divide-border border-y border-border">
+      <Sheet open={openMenu} onOpenChange={setOpenMenu}>
+        <SheetContent
+          side="right"
+          className="w-[min(26rem,92vw)] max-w-none overflow-y-auto border-ink-foreground/10 bg-hero-surface p-0 text-ink-foreground sm:max-w-md xl:hidden"
+        >
+          <SheetHeader className="border-b border-ink-foreground/10 px-5 py-5 text-left">
+            <SheetTitle className="pr-10 text-ink-foreground">
+              <Logo background="dark" className="h-auto w-full max-w-56 sm:max-w-64" />
+            </SheetTitle>
+          </SheetHeader>
+          <div className="flex min-h-[calc(100dvh-5rem)] flex-col overflow-x-hidden px-5 py-5">
+            <nav aria-label="Navegación móvil">
+              <ul className="divide-y divide-ink-foreground/10 border-y border-ink-foreground/10">
                 <li>
-                  <Link to="/" className="block py-3 font-display text-sm uppercase">
+                  <Link
+                    to="/"
+                    onClick={() => setOpenMenu(false)}
+                    className="micro-scale block min-h-14 py-4 font-display text-base uppercase transition-colors hover:text-primary"
+                    activeProps={{ className: "text-primary" }}
+                    activeOptions={{ exact: true }}
+                  >
                     Inicio
                   </Link>
                 </li>
-                {menu.map(({ item, columnas }) => {
-                  const abierta = mobileCat === item.slug;
+                {CATEGORIAS.map((item) => {
+                  const entry = menu.find((menuItem) => menuItem.item.slug === item.slug);
+                  const abierto = openMobileItem === item.slug;
                   return (
                     <li key={item.slug}>
-                      <button
+                      <Button
                         type="button"
-                        aria-expanded={abierta}
-                        onClick={() => {
-                          setMobileCat(abierta ? null : item.slug);
-                          setMobileSub(null);
-                        }}
-                        className="flex w-full items-center justify-between py-3 font-display text-sm uppercase"
+                        variant="ghost"
+                        aria-expanded={abierto}
+                        aria-controls={`menu-movil-${item.slug}`}
+                        onClick={() => setOpenMobileItem(abierto ? null : item.slug)}
+                        className="micro-scale flex min-h-14 w-full justify-between rounded-none px-0 py-4 font-display text-base uppercase hover:bg-transparent hover:text-primary"
                       >
                         {item.name}
                         <ChevronDown
-                          className={`size-4 transition-transform ${abierta ? "rotate-180 text-primary" : ""}`}
-                          aria-hidden
+                          className={`size-4 transition-transform duration-300 ${abierto ? "rotate-180 text-primary" : ""}`}
                         />
-                      </button>
-                      {abierta && (
-                        <div className="pb-3">
-                          {columnas.map((col) => {
-                            const subAbierta = mobileSub === col.titulo;
-                            return (
-                              <div key={col.titulo} className="mb-1">
-                                <button
-                                  type="button"
-                                  aria-expanded={subAbierta}
-                                  onClick={() => setMobileSub(subAbierta ? null : col.titulo)}
-                                  className="flex w-full items-center justify-between py-2 pl-3 text-left text-sm font-semibold text-primary"
-                                >
-                                  {col.titulo}
-                                  <ChevronDown
-                                    className={`size-4 shrink-0 transition-transform ${subAbierta ? "rotate-180" : ""}`}
-                                    aria-hidden
-                                  />
-                                </button>
-                                {subAbierta && (
-                                  <ul className="space-y-1 pb-2 pl-6">
-                                    {col.productos.map((p) => (
-                                      <li key={p.id}>
-                                        <Link
-                                          to="/producto/$slug"
-                                          params={{ slug: p.slug }}
-                                          className="block py-1 text-sm text-muted-foreground hover:text-primary"
-                                        >
-                                          {p.name}
-                                        </Link>
-                                      </li>
-                                    ))}
-                                  </ul>
-                                )}
-                              </div>
-                            );
-                          })}
+                      </Button>
+                      {abierto && (
+                        <div id={`menu-movil-${item.slug}`} className="pb-5">
                           <Link
                             to="/categoria/$slug"
                             params={{ slug: item.slug }}
-                            className="mt-2 inline-block pl-3 font-display text-xs tracking-widest text-primary uppercase"
+                            onClick={() => setOpenMenu(false)}
+                            className="mb-4 inline-flex min-h-10 items-center font-sans text-xs font-semibold text-primary uppercase"
                           >
                             Ver todo {item.name} →
                           </Link>
+                          <div className="space-y-4 border-l border-ink-foreground/10 pl-4">
+                            {(entry?.columnas ?? []).map((columna) => (
+                              <div key={columna.titulo}>
+                                {columna.slug ? (
+                                  <Link
+                                    to="/categoria/$slug"
+                                    params={{ slug: columna.slug }}
+                                    onClick={() => setOpenMenu(false)}
+                                    className="block py-1 font-display text-xs text-ink-muted uppercase transition-colors hover:text-primary"
+                                  >
+                                    {columna.titulo}
+                                  </Link>
+                                ) : (
+                                  <p className="py-1 font-display text-xs text-ink-muted uppercase">
+                                    {columna.titulo}
+                                  </p>
+                                )}
+                                <ul className="mt-1 space-y-0.5">
+                                  {columna.productos.map((producto) => (
+                                    <li key={producto.id}>
+                                      <Link
+                                        to="/producto/$slug"
+                                        params={{ slug: producto.slug }}
+                                        onClick={() => setOpenMenu(false)}
+                                        className="block min-h-9 py-2 text-sm leading-5 transition-colors hover:text-primary"
+                                      >
+                                        {producto.name}
+                                      </Link>
+                                    </li>
+                                  ))}
+                                </ul>
+                              </div>
+                            ))}
+                          </div>
                         </div>
                       )}
                     </li>
                   );
                 })}
               </ul>
-            </div>
+            </nav>
 
-            <div>
-              <p className="mb-2 font-display text-xs tracking-widest text-muted-foreground uppercase">
-                Servicios
-              </p>
-              <ul className="space-y-1">
-                {SERVICIOS.map((s) => (
-                  <li key={s.to}>
-                    <Link to={s.to} className="block py-1 text-sm">
-                      {s.name}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
+            <div className="mt-6 border-t border-ink-foreground/15 pt-5">
+              <NaturHouseLink onClick={() => setOpenMenu(false)} />
 
-            <div>
-              <p className="mb-2 font-display text-xs tracking-widest text-muted-foreground uppercase">
-                Empresa
-              </p>
-              <ul className="space-y-1">
-                <li>
-                  <Link to="/empresa" className="block py-1 text-sm">
-                    La empresa
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/contacto" className="block py-1 text-sm">
-                    Contacto
-                  </Link>
-                </li>
-                <li>
-                  <Link to="/cuenta" className="block py-1 text-sm">
-                    Área de cliente
-                  </Link>
-                </li>
-                <li>
-                  <a
-                    href={EMPRESA.enlaceExterno.url}
-                    target="_blank"
-                    rel="noreferrer noopener"
-                    className="mt-2 inline-block bg-primary px-4 py-2 font-display text-sm text-primary-foreground uppercase"
+              <div className="mt-2 divide-y divide-ink-foreground/10">
+                <div>
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    aria-expanded={openMobileItem === "empresa"}
+                    aria-controls="menu-movil-empresa"
+                    onClick={() =>
+                      setOpenMobileItem(openMobileItem === "empresa" ? null : "empresa")
+                    }
+                    className="micro-scale flex min-h-14 w-full justify-between rounded-none px-0 py-4 font-display text-base uppercase hover:bg-transparent hover:text-primary"
                   >
-                    {EMPRESA.enlaceExterno.name}
-                  </a>
-                </li>
-              </ul>
+                    Empresa
+                    <ChevronDown
+                      className={`size-4 transition-transform duration-300 ${openMobileItem === "empresa" ? "rotate-180 text-primary" : ""}`}
+                    />
+                  </Button>
+                  {openMobileItem === "empresa" && (
+                    <ul
+                      id="menu-movil-empresa"
+                      className="border-l border-ink-foreground/10 pb-3 pl-4"
+                    >
+                      <li>
+                        <Link
+                          to="/empresa"
+                          onClick={() => setOpenMenu(false)}
+                          className="block min-h-11 py-3 text-sm transition-colors hover:text-primary"
+                        >
+                          La empresa
+                        </Link>
+                      </li>
+                      <li>
+                        <Link
+                          to="/contacto"
+                          onClick={() => setOpenMenu(false)}
+                          className="block min-h-11 py-3 text-sm transition-colors hover:text-primary"
+                        >
+                          Trabaja con nosotros
+                        </Link>
+                      </li>
+                    </ul>
+                  )}
+                </div>
+                <Link
+                  to="/diseno-grafico"
+                  onClick={() => setOpenMenu(false)}
+                  className="micro-scale flex min-h-14 items-center py-4 font-display text-base uppercase transition-colors hover:text-primary"
+                >
+                  Diseño gráfico
+                </Link>
+                <Link
+                  to="/cuenta"
+                  onClick={() => setOpenMenu(false)}
+                  className="micro-scale flex min-h-14 items-center py-4 font-display text-base uppercase transition-colors hover:text-primary"
+                >
+                  Área de cliente
+                </Link>
+                <Link
+                  to="/admin"
+                  onClick={() => setOpenMenu(false)}
+                  className="micro-scale flex min-h-14 items-center gap-2 py-4 font-display text-base uppercase transition-colors hover:text-primary"
+                >
+                  <LayoutDashboard className="size-4" />
+                  Panel Admin
+                </Link>
+              </div>
             </div>
 
-            <div className="flex items-center gap-2 border-t border-border pt-4">
-              <a
-                href={REDES.facebook}
-                target="_blank"
-                rel="noreferrer noopener"
-                aria-label="Facebook de Urban Print"
-                className="grid size-9 place-items-center text-foreground hover:text-primary"
+            <div className="mt-6 border-t border-ink-foreground/15 pt-6">
+              <p className="font-display text-xl uppercase">¿Tienes un proyecto?</p>
+              <p className="mt-1 text-sm text-ink-muted">Cuéntanos qué necesitas.</p>
+              <Button
+                asChild
+                size="lg"
+                className="micro-scale mt-5 h-12 w-full rounded-none font-display text-sm uppercase"
               >
-                <Facebook className="size-5" />
-              </a>
-              <a
-                href={REDES.instagram}
-                target="_blank"
-                rel="noreferrer noopener"
-                aria-label="Instagram de Urban Print"
-                className="grid size-9 place-items-center text-foreground hover:text-primary"
-              >
-                <Instagram className="size-5" />
-              </a>
+                <Link to="/contacto" onClick={() => setOpenMenu(false)}>
+                  Pedir presupuesto →
+                </Link>
+              </Button>
+              <div className="mt-5 flex items-center gap-5 border-t border-ink-foreground/10 pt-5">
+                <a
+                  href={REDES.instagram}
+                  target="_blank"
+                  rel="noreferrer noopener"
+                  className="micro-scale inline-flex min-h-10 items-center gap-2 text-xs uppercase transition-colors hover:text-primary"
+                >
+                  <Instagram className="size-4" />
+                  Instagram
+                </a>
+                <a
+                  href={REDES.facebook}
+                  target="_blank"
+                  rel="noreferrer noopener"
+                  className="micro-scale inline-flex min-h-10 items-center gap-2 text-xs uppercase transition-colors hover:text-primary"
+                >
+                  <Facebook className="size-4" />
+                  Facebook
+                </a>
+              </div>
             </div>
           </div>
-        </div>
-      )}
+        </SheetContent>
+      </Sheet>
     </header>
   );
 }

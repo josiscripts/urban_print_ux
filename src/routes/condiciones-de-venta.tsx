@@ -33,9 +33,9 @@ function CondicionesVentaPage() {
     >
       <LegalSection title="1. Información general">
         <p>
-          La titularidad de este sitio web <strong>{TITULAR.web}</strong> (en adelante, Sitio Web) la
-          ostenta <strong>{TITULAR.nombre}</strong>, con NIF <strong>{TITULAR.nif}</strong>, y cuyos
-          datos de contacto son los siguientes:
+          La titularidad de este sitio web <strong>{TITULAR.web}</strong> (en adelante, Sitio Web)
+          la ostenta <strong>{TITULAR.nombre}</strong>, con NIF <strong>{TITULAR.nif}</strong>, y
+          cuyos datos de contacto son los siguientes:
         </p>
         <LegalList
           items={[
@@ -66,15 +66,15 @@ function CondicionesVentaPage() {
           ]}
         />
         <p>
-          Este documento (así como otros documentos que aquí se mencionen) regula las condiciones por
-          las que se rige el uso de este Sitio Web y la compra o adquisición de productos y/o
+          Este documento (así como otros documentos que aquí se mencionen) regula las condiciones
+          por las que se rige el uso de este Sitio Web y la compra o adquisición de productos y/o
           servicios en el mismo (en adelante, Condiciones).
         </p>
         <p>
           A efectos de estas Condiciones se entiende que la actividad que Urban Print desarrolla a
           través del Sitio Web comprende los servicios de imprenta online: imprenta general, gran
-          formato, impresión textil, merchandising, regalos personalizados, eventos y bodas, sellos y
-          diseño gráfico.
+          formato, impresión textil, merchandising, regalos personalizados, eventos y bodas, sellos
+          y diseño gráfico.
         </p>
         <p>
           Además de leer las presentes Condiciones, antes de acceder, navegar y/o usar esta página
@@ -87,8 +87,8 @@ function CondicionesVentaPage() {
         </p>
         <p>
           Asimismo, se informa de que estas Condiciones podrían ser modificadas. El Usuario es
-          responsable de consultarlas cada vez que acceda, navegue y/o use el Sitio Web, ya que serán
-          aplicables aquellas que se encuentren vigentes en el momento en que se solicite la
+          responsable de consultarlas cada vez que acceda, navegue y/o use el Sitio Web, ya que
+          serán aplicables aquellas que se encuentren vigentes en el momento en que se solicite la
           adquisición de productos y/o servicios.
         </p>
         <p>
@@ -101,12 +101,14 @@ function CondicionesVentaPage() {
       <LegalSection title="2. El Usuario">
         <p>
           El acceso, la navegación y uso del Sitio Web confiere la condición de usuario (en adelante
-          referido, indistintamente, individualmente como Usuario o conjuntamente como Usuarios), por
-          lo que se aceptan, desde que se inicia la navegación por el Sitio Web, todas las
+          referido, indistintamente, individualmente como Usuario o conjuntamente como Usuarios),
+          por lo que se aceptan, desde que se inicia la navegación por el Sitio Web, todas las
           Condiciones aquí establecidas, así como sus ulteriores modificaciones, sin perjuicio de la
           aplicación de la correspondiente normativa legal de obligado cumplimiento según el caso.
         </p>
-        <p>El Usuario asume su responsabilidad de un uso correcto del Sitio Web, que se extenderá a:</p>
+        <p>
+          El Usuario asume su responsabilidad de un uso correcto del Sitio Web, que se extenderá a:
+        </p>
         <LegalList
           items={[
             "Hacer uso de este Sitio Web únicamente para realizar consultas y compras o adquisiciones legalmente válidas.",
@@ -121,15 +123,15 @@ function CondicionesVentaPage() {
         <p>
           El Sitio Web está dirigido principalmente a Usuarios residentes en España. Urban Print no
           asegura que el Sitio Web cumpla con legislaciones de otros países, ya sea total o
-          parcialmente, y declina toda responsabilidad que se pueda derivar de dicho acceso, así como
-          tampoco asegura envíos o prestación de servicios fuera de España.
+          parcialmente, y declina toda responsabilidad que se pueda derivar de dicho acceso, así
+          como tampoco asegura envíos o prestación de servicios fuera de España.
         </p>
       </LegalSection>
 
       <LegalSection title="3. Proceso de compra o adquisición">
         <p>
-          Los Usuarios debidamente registrados pueden comprar en el Sitio Web por los medios y formas
-          establecidos. Deberán seguir el procedimiento de compra y/o adquisición online de{" "}
+          Los Usuarios debidamente registrados pueden comprar en el Sitio Web por los medios y
+          formas establecidos. Deberán seguir el procedimiento de compra y/o adquisición online de{" "}
           {TITULAR.web}, durante el cual varios productos y/o servicios pueden ser seleccionados y
           añadidos al carrito, cesta o espacio final de compra y, finalmente, hacer clic en
           «Finalizar compra».
@@ -144,7 +146,8 @@ function CondicionesVentaPage() {
           recibido su pedido o solicitud de compra y/o prestación del servicio, es decir, la
           confirmación del pedido. Y, en su caso, se le informará igualmente mediante correo
           electrónico cuando su compra esté siendo enviada. Estas informaciones también podrían
-          ponerse a disposición del Usuario a través de su espacio personal de conexión al Sitio Web.
+          ponerse a disposición del Usuario a través de su espacio personal de conexión al Sitio
+          Web.
         </p>
         <p>
           Una vez el procedimiento de compra ha concluido, el Usuario consiente que el Sitio Web
@@ -156,11 +159,11 @@ function CondicionesVentaPage() {
         </p>
         <p>
           El Usuario reconoce estar al corriente, en el momento de la compra, de ciertas condiciones
-          particulares de venta que conciernen al producto y/o servicio en cuestión y que se muestran
-          junto a la presentación o imagen de este en su página del Sitio Web, indicando, a modo
-          enunciativo pero no exhaustivo: nombre, precio, componentes, peso, cantidad, color,
-          detalles de los productos o características, modo en el que se llevarán a cabo y/o coste de
-          las prestaciones; y reconoce que la realización del pedido de compra materializa la
+          particulares de venta que conciernen al producto y/o servicio en cuestión y que se
+          muestran junto a la presentación o imagen de este en su página del Sitio Web, indicando, a
+          modo enunciativo pero no exhaustivo: nombre, precio, componentes, peso, cantidad, color,
+          detalles de los productos o características, modo en el que se llevarán a cabo y/o coste
+          de las prestaciones; y reconoce que la realización del pedido de compra materializa la
           aceptación plena y completa de las condiciones particulares de venta aplicables a cada
           caso.
         </p>
@@ -179,9 +182,9 @@ function CondicionesVentaPage() {
           Urban Print realiza grandes esfuerzos para que la información mostrada en el Sitio Web sea
           correcta, en ocasiones el embalaje y/o los materiales y/o los componentes de los productos
           pueden contener información adicional o distinta de la que aparece en el Sitio Web. Por
-          ello, el Usuario debe considerar no solo la información suministrada por el Sitio Web, sino
-          también la disponible en el etiquetado, las advertencias y/o instrucciones que acompañen al
-          producto.
+          ello, el Usuario debe considerar no solo la información suministrada por el Sitio Web,
+          sino también la disponible en el etiquetado, las advertencias y/o instrucciones que
+          acompañen al producto.
         </p>
       </LegalSection>
 
@@ -208,14 +211,14 @@ function CondicionesVentaPage() {
           Salvo que se indique puntualmente otra cosa, los precios de los artículos ofrecidos
           excluyen los gastos de envío, en los que se pudiera incurrir, que se añadirán al importe
           total debido en el momento de gestionar el procedimiento de envío por parte del Usuario,
-          donde este consultará los métodos y costes de envío disponibles y elegirá libremente el que
-          más le convenga. Urban Print realiza los servicios de entrega y/o envío a través de
+          donde este consultará los métodos y costes de envío disponibles y elegirá libremente el
+          que más le convenga. Urban Print realiza los servicios de entrega y/o envío a través de
           Correos.
         </p>
         <p>
           En ningún caso el Sitio Web añadirá costes adicionales al precio de un producto o de un
-          servicio de forma automática, sino solo aquellos que el Usuario haya seleccionado y elegido
-          voluntaria y libremente.
+          servicio de forma automática, sino solo aquellos que el Usuario haya seleccionado y
+          elegido voluntaria y libremente.
         </p>
         <p>
           Los precios pueden cambiar en cualquier momento, pero los posibles cambios no afectarán a
@@ -223,12 +226,7 @@ function CondicionesVentaPage() {
           solicitud de compra y recibido una confirmación de pedido.
         </p>
         <p>Los medios de pago aceptados serán:</p>
-        <LegalList
-          items={[
-            "Tarjeta de crédito.",
-            "Tarjeta de débito.",
-          ]}
-        />
+        <LegalList items={["Tarjeta de crédito.", "Tarjeta de débito."]} />
         <p>
           El pago con tarjeta de crédito o débito es el único medio de pago admitido en el Sitio
           Web. No se aceptan pagos mediante PayPal, transferencia bancaria ni contra reembolso.
@@ -275,39 +273,39 @@ function CondicionesVentaPage() {
         <p>
           Si por algún motivo que le fuera imputable Urban Print no pudiera cumplir con la fecha de
           entrega, contactará con el Usuario para informarle de esta circunstancia y este podrá
-          elegir seguir adelante con la compra estableciendo una nueva fecha de entrega o bien anular
-          el pedido con el reembolso total del precio pagado. En cualquier caso, las entregas a
-          domicilio se realizan en días laborables.
+          elegir seguir adelante con la compra estableciendo una nueva fecha de entrega o bien
+          anular el pedido con el reembolso total del precio pagado. En cualquier caso, las entregas
+          a domicilio se realizan en días laborables.
         </p>
         <p>
           Si resultara imposible efectuar la entrega del pedido por ausencia del Usuario, el pedido
           podría ser devuelto al almacén. No obstante, el transportista dejaría un aviso explicando
-          dónde se encuentra el pedido y cómo hacer para que sea entregado de nuevo. Si el Usuario no
-          va a estar en el lugar de entrega en la franja horaria convenida, debe ponerse en contacto
-          con Urban Print para convenir la entrega otro día.
+          dónde se encuentra el pedido y cómo hacer para que sea entregado de nuevo. Si el Usuario
+          no va a estar en el lugar de entrega en la franja horaria convenida, debe ponerse en
+          contacto con Urban Print para convenir la entrega otro día.
         </p>
         <p>
-          En caso de que transcurran 30 días desde que su pedido esté disponible para su entrega y no
-          haya sido entregado por causa no imputable a Urban Print, se entenderá que el Usuario desea
-          desistir del contrato y este se considerará resuelto. Como consecuencia, todos los pagos
-          recibidos del Usuario le serán devueltos, a excepción de los gastos adicionales resultantes
-          de la elección propia del Usuario de una modalidad de entrega diferente a la modalidad
-          menos costosa de entrega ordinaria que ofrece el Sitio Web, sin ninguna demora indebida y,
-          en cualquier caso, en el plazo máximo de 14 días naturales desde la fecha en que se
-          considera resuelto el contrato. No obstante, el Usuario debe tener presente que el
+          En caso de que transcurran 30 días desde que su pedido esté disponible para su entrega y
+          no haya sido entregado por causa no imputable a Urban Print, se entenderá que el Usuario
+          desea desistir del contrato y este se considerará resuelto. Como consecuencia, todos los
+          pagos recibidos del Usuario le serán devueltos, a excepción de los gastos adicionales
+          resultantes de la elección propia del Usuario de una modalidad de entrega diferente a la
+          modalidad menos costosa de entrega ordinaria que ofrece el Sitio Web, sin ninguna demora
+          indebida y, en cualquier caso, en el plazo máximo de 14 días naturales desde la fecha en
+          que se considera resuelto el contrato. No obstante, el Usuario debe tener presente que el
           transporte derivado de la resolución puede tener un coste adicional que le podrá ser
           repercutido.
         </p>
         <p>
           A efectos de las presentes Condiciones, se entenderá que se ha producido la entrega o que
-          el pedido ha sido entregado en el momento en el que el Usuario o un tercero indicado por el
-          Usuario adquiera la posesión material de los productos, lo que se acreditará mediante la
-          firma de la recepción del pedido en la dirección de entrega convenida.
+          el pedido ha sido entregado en el momento en el que el Usuario o un tercero indicado por
+          el Usuario adquiera la posesión material de los productos, lo que se acreditará mediante
+          la firma de la recepción del pedido en la dirección de entrega convenida.
         </p>
         <p>
-          Los riesgos que de los productos se pudieran derivar serán a cargo del Usuario a partir del
-          momento de su entrega. El Usuario adquiere la propiedad de los productos cuando Urban Print
-          recibe el pago completo de todas las cantidades debidas en relación con la compra,
+          Los riesgos que de los productos se pudieran derivar serán a cargo del Usuario a partir
+          del momento de su entrega. El Usuario adquiere la propiedad de los productos cuando Urban
+          Print recibe el pago completo de todas las cantidades debidas en relación con la compra,
           incluidos los gastos de envío, o bien en el momento de la entrega, si esta tiene lugar en
           un momento posterior a la recepción completa del importe.
         </p>
@@ -322,7 +320,6 @@ function CondicionesVentaPage() {
           Urban Print no realiza envíos con destino a Canarias, Ceuta ni Melilla, por lo que no se
           admitirán pedidos con dirección de entrega en dichos territorios.
         </p>
-
       </LegalSection>
 
       <LegalSection title="7. Medios técnicos para corregir errores">
@@ -330,8 +327,8 @@ function CondicionesVentaPage() {
           Se pone en conocimiento del Usuario que, en caso de que detecte que se ha producido un
           error al introducir datos necesarios para procesar su solicitud de compra en el Sitio Web,
           podrá modificarlos poniéndose en contacto con Urban Print a través de los espacios de
-          contacto habilitados en el Sitio Web y/o utilizando los datos de contacto facilitados en la
-          cláusula primera (Información general). Asimismo, estas informaciones también podrían
+          contacto habilitados en el Sitio Web y/o utilizando los datos de contacto facilitados en
+          la cláusula primera (Información general). Asimismo, estas informaciones también podrían
           subsanarse por el Usuario a través de su espacio personal de conexión al Sitio Web.
         </p>
         <p>
@@ -351,24 +348,25 @@ function CondicionesVentaPage() {
         <LegalSubtitle>Derecho de desistimiento</LegalSubtitle>
         <p>
           El Usuario, en tanto que consumidor y usuario, realiza una compra en el Sitio Web y, por
-          tanto, le asiste el derecho a desistir de dicha compra en un plazo de 14 días naturales sin
-          necesidad de justificación.
+          tanto, le asiste el derecho a desistir de dicha compra en un plazo de 14 días naturales
+          sin necesidad de justificación.
         </p>
         <p>
-          Este plazo de desistimiento expirará a los 14 días naturales del día en que el Usuario o un
-          tercero autorizado por este, distinto del transportista, adquirió la posesión material de
-          los bienes adquiridos en el Sitio Web de Urban Print o, en caso de que los bienes que
+          Este plazo de desistimiento expirará a los 14 días naturales del día en que el Usuario o
+          un tercero autorizado por este, distinto del transportista, adquirió la posesión material
+          de los bienes adquiridos en el Sitio Web de Urban Print o, en caso de que los bienes que
           componen su pedido se entreguen por separado, a los 14 días naturales del día en que
           adquirió la posesión material del último de esos bienes; o, en el caso de tratarse de un
-          contrato de servicios, a los 14 días naturales desde el día de la celebración del contrato.
+          contrato de servicios, a los 14 días naturales desde el día de la celebración del
+          contrato.
         </p>
         <p>
-          Para ejercer este derecho de desistimiento, el Usuario deberá notificar su decisión a Urban
-          Print. Podrá hacerlo a través de los espacios de contacto habilitados en el Sitio Web. El
-          Usuario, independientemente del medio que elija para comunicar su decisión, debe expresar
-          de forma clara e inequívoca que es su intención desistir del contrato de compra. En todo
-          caso, el Usuario podrá utilizar el modelo de formulario de desistimiento que Urban Print
-          pone a su disposición, si bien su uso no es obligatorio. Para cumplir el plazo de
+          Para ejercer este derecho de desistimiento, el Usuario deberá notificar su decisión a
+          Urban Print. Podrá hacerlo a través de los espacios de contacto habilitados en el Sitio
+          Web. El Usuario, independientemente del medio que elija para comunicar su decisión, debe
+          expresar de forma clara e inequívoca que es su intención desistir del contrato de compra.
+          En todo caso, el Usuario podrá utilizar el modelo de formulario de desistimiento que Urban
+          Print pone a su disposición, si bien su uso no es obligatorio. Para cumplir el plazo de
           desistimiento, basta con que la comunicación sea enviada antes de que venza el plazo
           correspondiente.
         </p>
@@ -409,11 +407,11 @@ function CondicionesVentaPage() {
           el suministro de contenido digital sin soporte físico.
         </p>
         <p>
-          En este mismo sentido se rige la prestación de un servicio que el Usuario pudiera contratar
-          en este Sitio Web, pues esta misma Ley establece que no asistirá el derecho de
+          En este mismo sentido se rige la prestación de un servicio que el Usuario pudiera
+          contratar en este Sitio Web, pues esta misma Ley establece que no asistirá el derecho de
           desistimiento a los Usuarios cuando la prestación del servicio haya sido completamente
-          ejecutada, o cuando haya comenzado con el consentimiento expreso del consumidor y usuario y
-          con el reconocimiento por su parte de que es consciente de que, una vez que el contrato
+          ejecutada, o cuando haya comenzado con el consentimiento expreso del consumidor y usuario
+          y con el reconocimiento por su parte de que es consciente de que, una vez que el contrato
           haya sido completamente ejecutado por Urban Print, habrá perdido su derecho de
           desistimiento.
         </p>
@@ -440,10 +438,10 @@ function CondicionesVentaPage() {
         <LegalSubtitle>Devolución de productos defectuosos o error en el envío</LegalSubtitle>
         <p>
           Se trata de todos aquellos casos en los que el Usuario considera que, en el momento de la
-          entrega, el producto no se ajusta a lo estipulado en el contrato o pedido de compra, y que,
-          por tanto, deberá ponerse en contacto con Urban Print inmediatamente y hacerle saber la
-          disconformidad existente (defecto/error) por los mismos medios o utilizando los datos de
-          contacto que se facilitan en el apartado anterior.
+          entrega, el producto no se ajusta a lo estipulado en el contrato o pedido de compra, y
+          que, por tanto, deberá ponerse en contacto con Urban Print inmediatamente y hacerle saber
+          la disconformidad existente (defecto/error) por los mismos medios o utilizando los datos
+          de contacto que se facilitan en el apartado anterior.
         </p>
         <p>
           El Usuario será entonces informado sobre cómo proceder a la devolución de los productos, y
@@ -470,25 +468,26 @@ function CondicionesVentaPage() {
           los mismos que se manifieste en un plazo de tres años desde la entrega del producto.
         </p>
         <p>
-          En este sentido, se entiende que los productos son conformes con el contrato siempre que se
-          ajusten a la descripción realizada por Urban Print y posean las cualidades presentadas en
-          la misma; sean aptos para los usos a que ordinariamente se destinan los productos del mismo
-          tipo; y presenten la calidad y prestaciones habituales de un producto del mismo tipo y que
-          sean fundamentalmente esperables del mismo. Cuando esto no sea así respecto de los
+          En este sentido, se entiende que los productos son conformes con el contrato siempre que
+          se ajusten a la descripción realizada por Urban Print y posean las cualidades presentadas
+          en la misma; sean aptos para los usos a que ordinariamente se destinan los productos del
+          mismo tipo; y presenten la calidad y prestaciones habituales de un producto del mismo tipo
+          y que sean fundamentalmente esperables del mismo. Cuando esto no sea así respecto de los
           productos entregados al Usuario, este deberá proceder tal y como se indica en el apartado
           «Devolución de productos defectuosos o error en el envío». No obstante, algunos de los
           productos que se comercializan en el Sitio Web podrían presentar características no
-          homogéneas siempre y cuando estas deriven del tipo de material con el que se han fabricado,
-          formando parte de la apariencia individual del producto y no constituyendo un defecto.
+          homogéneas siempre y cuando estas deriven del tipo de material con el que se han
+          fabricado, formando parte de la apariencia individual del producto y no constituyendo un
+          defecto.
         </p>
         <p>
-          Por otra parte, podría darse el caso de que el Usuario adquiera en el Sitio Web un producto
-          de una marca o de fabricación por un tercero. En este caso, y considerando el Usuario que
-          se trata de un producto defectuoso, también tiene la posibilidad de ponerse en contacto con
-          la marca o fabricante responsable del producto para averiguar cómo ejercer su derecho de
-          garantía legal directamente frente a los mismos durante los tres años siguientes a la
-          entrega de dichos productos. Para ello, el Usuario debe haber conservado toda la
-          información en relación con la garantía de los productos.
+          Por otra parte, podría darse el caso de que el Usuario adquiera en el Sitio Web un
+          producto de una marca o de fabricación por un tercero. En este caso, y considerando el
+          Usuario que se trata de un producto defectuoso, también tiene la posibilidad de ponerse en
+          contacto con la marca o fabricante responsable del producto para averiguar cómo ejercer su
+          derecho de garantía legal directamente frente a los mismos durante los tres años
+          siguientes a la entrega de dichos productos. Para ello, el Usuario debe haber conservado
+          toda la información en relación con la garantía de los productos.
         </p>
         <p>
           Para conocer más sobre el servicio posventa que Urban Print pone al servicio de los
@@ -517,7 +516,10 @@ function CondicionesVentaPage() {
             "Toda otra pérdida indirecta que no fuera razonablemente previsible por ambas partes en el momento en que se formalizó el contrato de compraventa de los productos.",
           ]}
         />
-        <p>Igualmente, Urban Print también limita su responsabilidad en cuanto a los siguientes casos:</p>
+        <p>
+          Igualmente, Urban Print también limita su responsabilidad en cuanto a los siguientes
+          casos:
+        </p>
         <LegalList
           items={[
             "Urban Print aplica todas las medidas concernientes a proporcionar una visualización fiel del producto en el Sitio Web; sin embargo, no se responsabiliza por las mínimas diferencias o inexactitudes que puedan existir debido a la falta de resolución de la pantalla, problemas del navegador que se utilice u otros de esta índole.",
@@ -533,15 +535,15 @@ function CondicionesVentaPage() {
           amenaza o ataque terrorista, guerra (declarada o no) o amenaza o preparativos de guerra;
           incendio, explosión, tormenta, inundación, terremoto, hundimiento, epidemia o cualquier
           otro desastre natural; imposibilidad de uso de trenes, barcos, aviones, transportes de
-          motor u otros medios de transporte, públicos o privados; imposibilidad de utilizar sistemas
-          públicos o privados de telecomunicaciones; y actos, decretos, legislación, normativa o
-          restricciones de cualquier gobierno o autoridad pública.
+          motor u otros medios de transporte, públicos o privados; imposibilidad de utilizar
+          sistemas públicos o privados de telecomunicaciones; y actos, decretos, legislación,
+          normativa o restricciones de cualquier gobierno o autoridad pública.
         </p>
         <p>
           De esta forma, las obligaciones quedarán suspendidas durante el periodo en que la causa de
           fuerza mayor continúe, y Urban Print dispondrá de una ampliación en el plazo para
-          cumplirlas por un periodo de tiempo igual al que dure dicha causa. Urban Print pondrá todos
-          los medios razonables para encontrar una solución que le permita cumplir con sus
+          cumplirlas por un periodo de tiempo igual al que dure dicha causa. Urban Print pondrá
+          todos los medios razonables para encontrar una solución que le permita cumplir con sus
           obligaciones a pesar de la causa de fuerza mayor.
         </p>
       </LegalSection>
@@ -549,14 +551,15 @@ function CondicionesVentaPage() {
       <LegalSection title="10. Comunicaciones por escrito y notificaciones">
         <p>
           Mediante el uso de este Sitio Web, el Usuario acepta que la mayor parte de las
-          comunicaciones con Urban Print sean electrónicas (correo electrónico o avisos publicados en
-          el Sitio Web).
+          comunicaciones con Urban Print sean electrónicas (correo electrónico o avisos publicados
+          en el Sitio Web).
         </p>
         <p>
           A efectos contractuales, el Usuario consiente en usar este medio electrónico de
-          comunicación y reconoce que todo contrato, notificación, información y demás comunicaciones
-          que Urban Print envíe de forma electrónica cumplen con los requisitos legales de ser por
-          escrito. Esta condición no afectará a los derechos reconocidos por ley al Usuario.
+          comunicación y reconoce que todo contrato, notificación, información y demás
+          comunicaciones que Urban Print envíe de forma electrónica cumplen con los requisitos
+          legales de ser por escrito. Esta condición no afectará a los derechos reconocidos por ley
+          al Usuario.
         </p>
         <p>
           El Usuario puede enviar notificaciones y/o comunicarse con Urban Print a través de los
@@ -597,9 +600,9 @@ function CondicionesVentaPage() {
           convenida verbalmente o por escrito por las mismas partes.
         </p>
         <p>
-          El Usuario y Urban Print reconocen haber consentido la celebración de un contrato sin haber
-          confiado en ninguna declaración o promesa hecha por la otra parte, salvo aquello que figura
-          expresamente mencionado en las presentes Condiciones.
+          El Usuario y Urban Print reconocen haber consentido la celebración de un contrato sin
+          haber confiado en ninguna declaración o promesa hecha por la otra parte, salvo aquello que
+          figura expresamente mencionado en las presentes Condiciones.
         </p>
       </LegalSection>
 
@@ -607,8 +610,8 @@ function CondicionesVentaPage() {
         <p>
           La información o datos de carácter personal que el Usuario facilite a Urban Print en el
           curso de una transacción en el Sitio Web serán tratados con arreglo a lo establecido en la
-          Política de Privacidad o de protección de datos (contenida, en su caso, en el Aviso Legal y
-          Condiciones Generales de Uso). Al acceder, navegar y/o usar el Sitio Web, el Usuario
+          Política de Privacidad o de protección de datos (contenida, en su caso, en el Aviso Legal
+          y Condiciones Generales de Uso). Al acceder, navegar y/o usar el Sitio Web, el Usuario
           consiente el tratamiento de dicha información y datos y declara que toda la información o
           datos que facilita son veraces.
         </p>
@@ -621,9 +624,9 @@ function CondicionesVentaPage() {
         </p>
         <p>
           Cualquier controversia, problema o desacuerdo que surja o esté relacionado con el acceso,
-          navegación y/o uso del Sitio Web, o con la interpretación y ejecución de estas Condiciones,
-          o con los contratos de venta entre Urban Print y el Usuario, será sometida a la
-          jurisdicción no exclusiva de los juzgados y tribunales españoles.
+          navegación y/o uso del Sitio Web, o con la interpretación y ejecución de estas
+          Condiciones, o con los contratos de venta entre Urban Print y el Usuario, será sometida a
+          la jurisdicción no exclusiva de los juzgados y tribunales españoles.
         </p>
       </LegalSection>
 

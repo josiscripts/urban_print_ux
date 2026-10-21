@@ -16,7 +16,11 @@ export default defineTool({
       .eq("slug", slug)
       .maybeSingle();
     if (error) return { content: [{ type: "text", text: error.message }], isError: true };
-    if (!data) return { content: [{ type: "text", text: `No se ha encontrado el producto "${slug}".` }], isError: true };
+    if (!data)
+      return {
+        content: [{ type: "text", text: `No se ha encontrado el producto "${slug}".` }],
+        isError: true,
+      };
     return {
       content: [{ type: "text", text: JSON.stringify(data) }],
       structuredContent: { product: data },

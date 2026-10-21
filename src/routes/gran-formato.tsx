@@ -11,7 +11,10 @@ export const Route = createFileRoute("/gran-formato")({
           "Impresión de gran formato en Orihuela: lonas, vinilos, roll-ups, carteles, rotulación de vehículos y escaparates.",
       },
       { property: "og:title", content: "Gran Formato | Urban Print" },
-      { property: "og:description", content: "Lonas, vinilos, roll-ups y rotulación con máxima durabilidad." },
+      {
+        property: "og:description",
+        content: "Lonas, vinilos, roll-ups y rotulación con máxima durabilidad.",
+      },
     ],
   }),
   component: () => (

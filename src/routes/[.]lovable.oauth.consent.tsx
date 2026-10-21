@@ -4,7 +4,9 @@ import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 
 type OAuthApi = {
-  getAuthorizationDetails: (id: string) => Promise<{ data: AuthDetails | null; error: Error | null }>;
+  getAuthorizationDetails: (
+    id: string,
+  ) => Promise<{ data: AuthDetails | null; error: Error | null }>;
   approveAuthorization: (id: string) => Promise<{ data: AuthResult | null; error: Error | null }>;
   denyAuthorization: (id: string) => Promise<{ data: AuthResult | null; error: Error | null }>;
 };
@@ -22,7 +24,7 @@ function oauthApi(): OAuthApi {
 export const Route = createFileRoute("/.lovable/oauth/consent")({
   ssr: false,
   validateSearch: (s: Record<string, unknown>) => ({
-    authorization_id: typeof s['authorization_id'] === "string" ? s['authorization_id'] : "",
+    authorization_id: typeof s["authorization_id"] === "string" ? s["authorization_id"] : "",
   }),
   beforeLoad: async ({ search, location }) => {
     if (!search.authorization_id) throw new Error("Falta authorization_id");

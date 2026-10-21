@@ -8,7 +8,10 @@ export const Route = createFileRoute("/carrito")({
   head: () => ({
     meta: [
       { title: "Carrito | Urban Print" },
-      { name: "description", content: "Revisa los productos de tu pedido antes de finalizar la compra." },
+      {
+        name: "description",
+        content: "Revisa los productos de tu pedido antes de finalizar la compra.",
+      },
       { property: "og:title", content: "Carrito | Urban Print" },
       { property: "og:description", content: "Revisa tu pedido en Urban Print." },
       { name: "robots", content: "noindex" },

@@ -16,7 +16,6 @@ export function precioAnterior(price: number): number {
   return anterior <= price ? Math.round((price + 1) * 100) / 100 : Math.round(anterior * 100) / 100;
 }
 
-
 export const ESTADOS: Record<string, string> = {
   pendiente_pago: "Pendiente de pago",
   en_produccion: "En producción",

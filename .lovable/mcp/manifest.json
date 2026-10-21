@@ -5,9 +5,7 @@
   "auth": {
     "type": "oauth",
     "issuer": "https://xfgcndntkweijojfbyit.supabase.co/auth/v1",
-    "accepted_audiences": [
-      "authenticated"
-    ]
+    "accepted_audiences": ["authenticated"]
   },
   "mcp": {
     "server": {
@@ -92,9 +90,7 @@
               "description": "Slug del producto."
             }
           },
-          "required": [
-            "slug"
-          ]
+          "required": ["slug"]
         },
         "outputSchema": null
       },
@@ -142,9 +138,7 @@
               "description": "Número del pedido."
             }
           },
-          "required": [
-            "order_number"
-          ]
+          "required": ["order_number"]
         },
         "outputSchema": null
       }

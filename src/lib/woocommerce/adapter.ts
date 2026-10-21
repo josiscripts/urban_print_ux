@@ -146,7 +146,7 @@ export function adaptarProductoWooCommerce(
   // Obtener primera imagen si está disponible
   let imageUrl: string | null = null;
   if (wooProd.images && wooProd.images.length > 0) {
-    imageUrl = wooProd.images[0].src || null;
+    imageUrl = wooProd.images[0]?.src || null;
   }
 
   // Obtener descripción limpia: prioridad short_description > description

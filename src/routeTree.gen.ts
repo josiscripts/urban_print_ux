@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
+import { Route as AdminRouteImport } from './routes/admin'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AvisoLegalRouteImport } from './routes/aviso-legal'
 import { Route as CarritoRouteImport } from './routes/carrito'
@@ -32,6 +33,13 @@ import { Route as RegalosPersonalizadosRouteImport } from './routes/regalos-pers
 import { Route as Char91DotmcpChar93ListToolsRouteImport } from './routes/[.mcp]/list-tools'
 import { Route as Char91DotwellKnownChar93OauthProtectedResourceRouteImport } from './routes/[.well-known]/oauth-protected-resource'
 import { Route as AuthenticatedCuentaRouteImport } from './routes/_authenticated/cuenta'
+import { Route as AdminIndexRouteImport } from './routes/admin.index'
+import { Route as AdminCalculadoraRouteImport } from './routes/admin.calculadora'
+import { Route as AdminCostesRouteImport } from './routes/admin.costes'
+import { Route as AdminGastosRouteImport } from './routes/admin.gastos'
+import { Route as AdminProductosRouteImport } from './routes/admin.productos'
+import { Route as AdminRentabilidadRouteImport } from './routes/admin.rentabilidad'
+import { Route as ApiGoogleReviewsRouteImport } from './routes/api.google-reviews'
 import { Route as CategoriaSlugRouteImport } from './routes/categoria.$slug'
 import { Route as ProductoSlugRouteImport } from './routes/producto.$slug'
 import { Route as DotlovableOauthConsentRouteImport } from './routes/[.]lovable.oauth.consent'
@@ -49,6 +57,11 @@ const IndexRoute = IndexRouteImport.update({
 } as any)
 const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
   id: '/_authenticated',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminRoute = AdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthRoute = AuthRouteImport.update({
@@ -158,6 +171,41 @@ const AuthenticatedCuentaRoute = AuthenticatedCuentaRouteImport.update({
   path: '/cuenta',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AdminIndexRoute = AdminIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminCalculadoraRoute = AdminCalculadoraRouteImport.update({
+  id: '/calculadora',
+  path: '/calculadora',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminCostesRoute = AdminCostesRouteImport.update({
+  id: '/costes',
+  path: '/costes',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminGastosRoute = AdminGastosRouteImport.update({
+  id: '/gastos',
+  path: '/gastos',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminProductosRoute = AdminProductosRouteImport.update({
+  id: '/productos',
+  path: '/productos',
+  getParentRoute: () => AdminRoute,
+} as any)
+const AdminRentabilidadRoute = AdminRentabilidadRouteImport.update({
+  id: '/rentabilidad',
+  path: '/rentabilidad',
+  getParentRoute: () => AdminRoute,
+} as any)
+const ApiGoogleReviewsRoute = ApiGoogleReviewsRouteImport.update({
+  id: '/api/google-reviews',
+  path: '/api/google-reviews',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CategoriaSlugRoute = CategoriaSlugRouteImport.update({
   id: '/categoria/$slug',
   path: '/categoria/$slug',
@@ -212,6 +260,7 @@ const AuthenticatedCuentaPedidosRoute =
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/admin': typeof AdminRouteWithChildren
   '/auth': typeof AuthRoute
   '/aviso-legal': typeof AvisoLegalRoute
   '/carrito': typeof CarritoRoute
@@ -233,8 +282,15 @@ export interface FileRoutesByFullPath {
   '/.mcp/list-tools': typeof Char91DotmcpChar93ListToolsRoute
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/cuenta': typeof AuthenticatedCuentaRouteWithChildren
+  '/admin/calculadora': typeof AdminCalculadoraRoute
+  '/admin/costes': typeof AdminCostesRoute
+  '/admin/gastos': typeof AdminGastosRoute
+  '/admin/productos': typeof AdminProductosRoute
+  '/admin/rentabilidad': typeof AdminRentabilidadRoute
+  '/api/google-reviews': typeof ApiGoogleReviewsRoute
   '/categoria/$slug': typeof CategoriaSlugRoute
   '/producto/$slug': typeof ProductoSlugRoute
+  '/admin/': typeof AdminIndexRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
   '/cuenta/descargas': typeof AuthenticatedCuentaDescargasRoute
@@ -265,8 +321,15 @@ export interface FileRoutesByTo {
   '/regalos-personalizados': typeof RegalosPersonalizadosRoute
   '/.mcp/list-tools': typeof Char91DotmcpChar93ListToolsRoute
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
+  '/admin/calculadora': typeof AdminCalculadoraRoute
+  '/admin/costes': typeof AdminCostesRoute
+  '/admin/gastos': typeof AdminGastosRoute
+  '/admin/productos': typeof AdminProductosRoute
+  '/admin/rentabilidad': typeof AdminRentabilidadRoute
+  '/api/google-reviews': typeof ApiGoogleReviewsRoute
   '/categoria/$slug': typeof CategoriaSlugRoute
   '/producto/$slug': typeof ProductoSlugRoute
+  '/admin': typeof AdminIndexRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
   '/cuenta/descargas': typeof AuthenticatedCuentaDescargasRoute
@@ -279,6 +342,7 @@ export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
+  '/admin': typeof AdminRouteWithChildren
   '/auth': typeof AuthRoute
   '/aviso-legal': typeof AvisoLegalRoute
   '/carrito': typeof CarritoRoute
@@ -300,8 +364,15 @@ export interface FileRoutesById {
   '/.mcp/list-tools': typeof Char91DotmcpChar93ListToolsRoute
   '/.well-known/oauth-protected-resource': typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
   '/_authenticated/cuenta': typeof AuthenticatedCuentaRouteWithChildren
+  '/admin/calculadora': typeof AdminCalculadoraRoute
+  '/admin/costes': typeof AdminCostesRoute
+  '/admin/gastos': typeof AdminGastosRoute
+  '/admin/productos': typeof AdminProductosRoute
+  '/admin/rentabilidad': typeof AdminRentabilidadRoute
+  '/api/google-reviews': typeof ApiGoogleReviewsRoute
   '/categoria/$slug': typeof CategoriaSlugRoute
   '/producto/$slug': typeof ProductoSlugRoute
+  '/admin/': typeof AdminIndexRoute
   '/.lovable/oauth/consent': typeof DotlovableOauthConsentRoute
   '/.mcp/invoke-tool/$tool': typeof Char91DotmcpChar93InvokeToolToolRoute
   '/_authenticated/cuenta/descargas': typeof AuthenticatedCuentaDescargasRoute
@@ -314,6 +385,7 @@ export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
+    | '/admin'
     | '/auth'
     | '/aviso-legal'
     | '/carrito'
@@ -335,8 +407,15 @@ export interface FileRouteTypes {
     | '/.mcp/list-tools'
     | '/.well-known/oauth-protected-resource'
     | '/cuenta'
+    | '/admin/calculadora'
+    | '/admin/costes'
+    | '/admin/gastos'
+    | '/admin/productos'
+    | '/admin/rentabilidad'
+    | '/api/google-reviews'
     | '/categoria/$slug'
     | '/producto/$slug'
+    | '/admin/'
     | '/.lovable/oauth/consent'
     | '/.mcp/invoke-tool/$tool'
     | '/cuenta/descargas'
@@ -367,8 +446,15 @@ export interface FileRouteTypes {
     | '/regalos-personalizados'
     | '/.mcp/list-tools'
     | '/.well-known/oauth-protected-resource'
+    | '/admin/calculadora'
+    | '/admin/costes'
+    | '/admin/gastos'
+    | '/admin/productos'
+    | '/admin/rentabilidad'
+    | '/api/google-reviews'
     | '/categoria/$slug'
     | '/producto/$slug'
+    | '/admin'
     | '/.lovable/oauth/consent'
     | '/.mcp/invoke-tool/$tool'
     | '/cuenta/descargas'
@@ -380,6 +466,7 @@ export interface FileRouteTypes {
     | '__root__'
     | '/'
     | '/_authenticated'
+    | '/admin'
     | '/auth'
     | '/aviso-legal'
     | '/carrito'
@@ -401,8 +488,15 @@ export interface FileRouteTypes {
     | '/.mcp/list-tools'
     | '/.well-known/oauth-protected-resource'
     | '/_authenticated/cuenta'
+    | '/admin/calculadora'
+    | '/admin/costes'
+    | '/admin/gastos'
+    | '/admin/productos'
+    | '/admin/rentabilidad'
+    | '/api/google-reviews'
     | '/categoria/$slug'
     | '/producto/$slug'
+    | '/admin/'
     | '/.lovable/oauth/consent'
     | '/.mcp/invoke-tool/$tool'
     | '/_authenticated/cuenta/descargas'
@@ -415,6 +509,7 @@ export interface FileRouteTypes {
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
+  AdminRoute: typeof AdminRouteWithChildren
   AuthRoute: typeof AuthRoute
   AvisoLegalRoute: typeof AvisoLegalRoute
   CarritoRoute: typeof CarritoRoute
@@ -435,6 +530,7 @@ export interface RootRouteChildren {
   RegalosPersonalizadosRoute: typeof RegalosPersonalizadosRoute
   Char91DotmcpChar93ListToolsRoute: typeof Char91DotmcpChar93ListToolsRoute
   Char91DotwellKnownChar93OauthProtectedResourceRoute: typeof Char91DotwellKnownChar93OauthProtectedResourceRoute
+  ApiGoogleReviewsRoute: typeof ApiGoogleReviewsRoute
   CategoriaSlugRoute: typeof CategoriaSlugRoute
   ProductoSlugRoute: typeof ProductoSlugRoute
   DotlovableOauthConsentRoute: typeof DotlovableOauthConsentRoute
@@ -455,6 +551,13 @@ declare module '@tanstack/react-router' {
       path: ''
       fullPath: '/'
       preLoaderRoute: typeof AuthenticatedRouteRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin': {
+      id: '/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/auth': {
@@ -604,6 +707,55 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedCuentaRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/admin/': {
+      id: '/admin/'
+      path: '/'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AdminIndexRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/calculadora': {
+      id: '/admin/calculadora'
+      path: '/calculadora'
+      fullPath: '/admin/calculadora'
+      preLoaderRoute: typeof AdminCalculadoraRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/costes': {
+      id: '/admin/costes'
+      path: '/costes'
+      fullPath: '/admin/costes'
+      preLoaderRoute: typeof AdminCostesRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/gastos': {
+      id: '/admin/gastos'
+      path: '/gastos'
+      fullPath: '/admin/gastos'
+      preLoaderRoute: typeof AdminGastosRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/productos': {
+      id: '/admin/productos'
+      path: '/productos'
+      fullPath: '/admin/productos'
+      preLoaderRoute: typeof AdminProductosRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/admin/rentabilidad': {
+      id: '/admin/rentabilidad'
+      path: '/rentabilidad'
+      fullPath: '/admin/rentabilidad'
+      preLoaderRoute: typeof AdminRentabilidadRouteImport
+      parentRoute: typeof AdminRoute
+    }
+    '/api/google-reviews': {
+      id: '/api/google-reviews'
+      path: '/api/google-reviews'
+      fullPath: '/api/google-reviews'
+      preLoaderRoute: typeof ApiGoogleReviewsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/categoria/$slug': {
       id: '/categoria/$slug'
       path: '/categoria/$slug'
@@ -700,9 +852,30 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
 const AuthenticatedRouteRouteWithChildren =
   AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
 
+interface AdminRouteChildren {
+  AdminCalculadoraRoute: typeof AdminCalculadoraRoute
+  AdminCostesRoute: typeof AdminCostesRoute
+  AdminGastosRoute: typeof AdminGastosRoute
+  AdminProductosRoute: typeof AdminProductosRoute
+  AdminRentabilidadRoute: typeof AdminRentabilidadRoute
+  AdminIndexRoute: typeof AdminIndexRoute
+}
+
+const AdminRouteChildren: AdminRouteChildren = {
+  AdminCalculadoraRoute: AdminCalculadoraRoute,
+  AdminCostesRoute: AdminCostesRoute,
+  AdminGastosRoute: AdminGastosRoute,
+  AdminProductosRoute: AdminProductosRoute,
+  AdminRentabilidadRoute: AdminRentabilidadRoute,
+  AdminIndexRoute: AdminIndexRoute,
+}
+
+const AdminRouteWithChildren = AdminRoute._addFileChildren(AdminRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
+  AdminRoute: AdminRouteWithChildren,
   AuthRoute: AuthRoute,
   AvisoLegalRoute: AvisoLegalRoute,
   CarritoRoute: CarritoRoute,
@@ -724,6 +897,7 @@ const rootRouteChildren: RootRouteChildren = {
   Char91DotmcpChar93ListToolsRoute: Char91DotmcpChar93ListToolsRoute,
   Char91DotwellKnownChar93OauthProtectedResourceRoute:
     Char91DotwellKnownChar93OauthProtectedResourceRoute,
+  ApiGoogleReviewsRoute: ApiGoogleReviewsRoute,
   CategoriaSlugRoute: CategoriaSlugRoute,
   ProductoSlugRoute: ProductoSlugRoute,
   DotlovableOauthConsentRoute: DotlovableOauthConsentRoute,

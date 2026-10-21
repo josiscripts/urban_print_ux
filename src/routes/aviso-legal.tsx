@@ -14,7 +14,8 @@ export const Route = createFileRoute("/aviso-legal")({
       { property: "og:title", content: "Aviso Legal y Condiciones de Uso | Urban Print" },
       {
         property: "og:description",
-        content: "Información general, términos de uso, política de enlaces y propiedad intelectual del sitio web de Urban Print.",
+        content:
+          "Información general, términos de uso, política de enlaces y propiedad intelectual del sitio web de Urban Print.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -33,8 +34,8 @@ function AvisoLegalPage() {
       <LegalSection title="I. Información general">
         <p>
           En cumplimiento con el deber de información dispuesto en la Ley 34/2002 de Servicios de la
-          Sociedad de la Información y el Comercio Electrónico (LSSI-CE) de 11 de julio, se facilitan
-          a continuación los siguientes datos de información general de este sitio web:
+          Sociedad de la Información y el Comercio Electrónico (LSSI-CE) de 11 de julio, se
+          facilitan a continuación los siguientes datos de información general de este sitio web:
         </p>
         <p>
           La titularidad de este sitio web, <strong>{TITULAR.web}</strong> (en adelante, Sitio Web),
@@ -77,10 +78,10 @@ function AvisoLegalPage() {
           El objeto de las presentes Condiciones Generales de Uso (en adelante, Condiciones) es
           regular el acceso y la utilización del Sitio Web. A los efectos de las presentes
           Condiciones se entenderá como Sitio Web: la apariencia externa de los interfaces de
-          pantalla, tanto de forma estática como de forma dinámica, es decir, el árbol de navegación;
-          y todos los elementos integrados tanto en los interfaces de pantalla como en el árbol de
-          navegación (en adelante, Contenidos) y todos aquellos servicios o recursos en línea que en
-          su caso ofrezca a los Usuarios (en adelante, Servicios).
+          pantalla, tanto de forma estática como de forma dinámica, es decir, el árbol de
+          navegación; y todos los elementos integrados tanto en los interfaces de pantalla como en
+          el árbol de navegación (en adelante, Contenidos) y todos aquellos servicios o recursos en
+          línea que en su caso ofrezca a los Usuarios (en adelante, Servicios).
         </p>
         <p>
           Urban Print se reserva la facultad de modificar, en cualquier momento y sin aviso previo,
@@ -104,18 +105,18 @@ function AvisoLegalPage() {
           Particulares por las que esto se rija.
         </p>
         <p>
-          La utilización de alguno de los Contenidos o Servicios del Sitio Web podrá hacerse mediante
-          la suscripción o registro previo del Usuario. La simple consulta de los Contenidos no
-          requiere previa suscripción o registro alguno.
+          La utilización de alguno de los Contenidos o Servicios del Sitio Web podrá hacerse
+          mediante la suscripción o registro previo del Usuario. La simple consulta de los
+          Contenidos no requiere previa suscripción o registro alguno.
         </p>
 
         <LegalSubtitle>El Usuario</LegalSubtitle>
         <p>
           El acceso, la navegación y uso del Sitio Web, así como de los espacios habilitados para
           interactuar entre los Usuarios, y entre el Usuario y Urban Print, como los comentarios y/o
-          espacios de blogging, confiere la condición de Usuario, por lo que se aceptan, desde que se
-          inicia la navegación por el Sitio Web, todas las Condiciones aquí establecidas, así como
-          sus ulteriores modificaciones, sin perjuicio de la aplicación de la correspondiente
+          espacios de blogging, confiere la condición de Usuario, por lo que se aceptan, desde que
+          se inicia la navegación por el Sitio Web, todas las Condiciones aquí establecidas, así
+          como sus ulteriores modificaciones, sin perjuicio de la aplicación de la correspondiente
           normativa legal de obligado cumplimiento según el caso. Dada la relevancia de lo anterior,
           se recomienda al Usuario leerlas cada vez que visite el Sitio Web.
         </p>
@@ -133,9 +134,9 @@ function AvisoLegalPage() {
         <p>
           Urban Print se reserva el derecho de retirar todos aquellos comentarios y aportaciones que
           vulneren la ley, el respeto a la dignidad de la persona, que sean discriminatorios,
-          xenófobos, racistas, pornográficos, spamming, que atenten contra la juventud o la infancia,
-          el orden o la seguridad pública o que, a su juicio, no resultaran adecuados para su
-          publicación.
+          xenófobos, racistas, pornográficos, spamming, que atenten contra la juventud o la
+          infancia, el orden o la seguridad pública o que, a su juicio, no resultaran adecuados para
+          su publicación.
         </p>
         <p>
           En cualquier caso, Urban Print no será responsable de las opiniones vertidas por los
@@ -164,10 +165,10 @@ function AvisoLegalPage() {
 
       <LegalSection title="III. Acceso y navegación en el Sitio Web: exclusión de garantías y responsabilidad">
         <p>
-          Urban Print no garantiza la continuidad, disponibilidad y utilidad del Sitio Web, ni de los
-          Contenidos o Servicios. Urban Print hará todo lo posible por el buen funcionamiento del
-          Sitio Web; sin embargo, no se responsabiliza ni garantiza que el acceso a este Sitio Web no
-          vaya a ser interrumpido o que esté libre de error.
+          Urban Print no garantiza la continuidad, disponibilidad y utilidad del Sitio Web, ni de
+          los Contenidos o Servicios. Urban Print hará todo lo posible por el buen funcionamiento
+          del Sitio Web; sin embargo, no se responsabiliza ni garantiza que el acceso a este Sitio
+          Web no vaya a ser interrumpido o que esté libre de error.
         </p>
         <p>
           Tampoco se responsabiliza o garantiza que el contenido o software al que pueda accederse a
@@ -205,15 +206,16 @@ function AvisoLegalPage() {
           que se pueda acceder por medio de los enlaces.
         </p>
         <p>
-          Urban Print en ningún caso revisará o controlará el contenido de otros sitios web, así como
-          tampoco aprueba, examina ni hace propios los productos y servicios, contenidos, archivos y
-          cualquier otro material existente en los referidos sitios enlazados, y no asume ninguna
-          responsabilidad por los daños y perjuicios que pudieran producirse por el acceso, uso,
-          calidad o licitud de sus contenidos, comunicaciones, opiniones, productos y servicios.
+          Urban Print en ningún caso revisará o controlará el contenido de otros sitios web, así
+          como tampoco aprueba, examina ni hace propios los productos y servicios, contenidos,
+          archivos y cualquier otro material existente en los referidos sitios enlazados, y no asume
+          ninguna responsabilidad por los daños y perjuicios que pudieran producirse por el acceso,
+          uso, calidad o licitud de sus contenidos, comunicaciones, opiniones, productos y
+          servicios.
         </p>
         <p>
-          El Usuario o tercero que realice un hipervínculo desde otro sitio web al Sitio Web de Urban
-          Print deberá saber que:
+          El Usuario o tercero que realice un hipervínculo desde otro sitio web al Sitio Web de
+          Urban Print deberá saber que:
         </p>
         <LegalList
           items={[
@@ -228,8 +230,8 @@ function AvisoLegalPage() {
       <LegalSection title="V. Propiedad intelectual e industrial">
         <p>
           Urban Print, por sí o como parte cesionaria, es titular de todos los derechos de propiedad
-          intelectual e industrial del Sitio Web, así como de los elementos contenidos en el mismo (a
-          título enunciativo y no exhaustivo: imágenes, sonido, audio, vídeo, software o textos,
+          intelectual e industrial del Sitio Web, así como de los elementos contenidos en el mismo
+          (a título enunciativo y no exhaustivo: imágenes, sonido, audio, vídeo, software o textos,
           marcas o logotipos, combinaciones de colores, estructura y diseño, selección de materiales
           usados, programas de ordenador necesarios para su funcionamiento, acceso y uso, etc.).
           Serán, por consiguiente, obras protegidas como propiedad intelectual por el ordenamiento
@@ -252,10 +254,10 @@ function AvisoLegalPage() {
           que estuviera instalado en el Sitio Web.
         </p>
         <p>
-          En caso de que el Usuario o un tercero considere que cualquiera de los Contenidos del Sitio
-          Web supone una violación de los derechos de protección de la propiedad intelectual, deberá
-          comunicarlo inmediatamente a Urban Print a través de los datos de contacto del apartado
-          I. Información general de este Aviso Legal y Condiciones Generales de Uso.
+          En caso de que el Usuario o un tercero considere que cualquiera de los Contenidos del
+          Sitio Web supone una violación de los derechos de protección de la propiedad intelectual,
+          deberá comunicarlo inmediatamente a Urban Print a través de los datos de contacto del
+          apartado I. Información general de este Aviso Legal y Condiciones Generales de Uso.
         </p>
       </LegalSection>
 
@@ -269,8 +271,8 @@ function AvisoLegalPage() {
           La relación entre el Usuario y Urban Print se regirá por la normativa vigente y de
           aplicación en el territorio español. De surgir cualquier controversia en relación con la
           interpretación y/o aplicación de estas Condiciones, las partes someterán sus conflictos a
-          la jurisdicción ordinaria, sometiéndose a los jueces y tribunales que correspondan conforme
-          a derecho.
+          la jurisdicción ordinaria, sometiéndose a los jueces y tribunales que correspondan
+          conforme a derecho.
         </p>
       </LegalSection>
 

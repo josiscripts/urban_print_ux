@@ -11,7 +11,10 @@ export const Route = createFileRoute("/merchandising")({
           "Merchandising personalizado en Orihuela: bolígrafos, tazas, bolsas, llaveros, libretas y packs promocionales para empresas.",
       },
       { property: "og:title", content: "Merchandising | Urban Print" },
-      { property: "og:description", content: "Artículos promocionales personalizados para tu marca." },
+      {
+        property: "og:description",
+        content: "Artículos promocionales personalizados para tu marca.",
+      },
     ],
   }),
   component: () => (

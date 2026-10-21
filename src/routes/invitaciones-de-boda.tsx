@@ -11,7 +11,10 @@ export const Route = createFileRoute("/invitaciones-de-boda")({
           "Invitaciones de boda personalizadas en Orihuela: diseño exclusivo, sobres, seating plan, minutas y detalles para invitados.",
       },
       { property: "og:title", content: "Invitaciones de Boda | Urban Print" },
-      { property: "og:description", content: "Papelería de boda con diseño exclusivo y acabados especiales." },
+      {
+        property: "og:description",
+        content: "Papelería de boda con diseño exclusivo y acabados especiales.",
+      },
     ],
   }),
   component: () => (

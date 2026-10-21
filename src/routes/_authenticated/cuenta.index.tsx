@@ -70,9 +70,7 @@ function EscritorioPage() {
             <p className="mt-4 font-display text-sm tracking-widest text-muted-foreground uppercase">
               {label}
             </p>
-            {valor !== null && (
-              <p className="mt-1 font-display text-2xl tracking-tight">{valor}</p>
-            )}
+            {valor !== null && <p className="mt-1 font-display text-2xl tracking-tight">{valor}</p>}
           </Link>
         ))}
       </div>
@@ -89,7 +87,10 @@ function EscritorioPage() {
         ) : (
           <ul className="mt-4 divide-y divide-border border border-border">
             {ultimos.map((p) => (
-              <li key={p.id} className="flex flex-wrap items-center justify-between gap-3 px-4 py-3">
+              <li
+                key={p.id}
+                className="flex flex-wrap items-center justify-between gap-3 px-4 py-3"
+              >
                 <span className="font-display text-sm tracking-wide uppercase">
                   #{p.order_number}
                 </span>

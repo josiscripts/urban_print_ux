@@ -2,6 +2,7 @@ import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 import { esZonaExcluida, MENSAJE_ZONA_EXCLUIDA } from "@/lib/shipping";
+import { getCatalogo } from "@/lib/catalog.functions";
 
 const addressSchema = z.object({
   id: z.string().uuid().optional(),
@@ -108,7 +109,9 @@ export const getPedidos = createServerFn({ method: "GET" })
   .handler(async ({ context }) => {
     const { data } = await context.supabase
       .from("orders")
-      .select("id, order_number, status, total, created_at, order_items(product_name, quantity, unit_price)")
+      .select(
+        "id, order_number, status, total, created_at, order_items(product_name, quantity, unit_price)",
+      )
       .eq("user_id", context.userId)
       .order("created_at", { ascending: false });
     return data ?? [];
@@ -155,14 +158,16 @@ export const crearPedido = createServerFn({ method: "POST" })
   .handler(async ({ data, context }) => {
     if (esZonaExcluida(data.shipping)) throw new Error(MENSAJE_ZONA_EXCLUIDA);
 
+    // El catálogo y los precios vienen de WooCommerce (fuente de verdad),
+    // nunca del cliente. order_items guarda slug/nombre/precio como texto,
+    // así que los pedidos siguen siendo compatibles con los IDs de Woo.
     const slugs = [...new Set(data.items.map((i) => i.slug))];
-    const { data: products, error: productsError } = await context.supabase
-      .from("products")
-      .select("slug, name, price")
-      .in("slug", slugs);
-    if (productsError) throw new Error("No se pudo validar el catálogo.");
-    const bySlug = new Map((products ?? []).map((p) => [p.slug, p]));
-    if (bySlug.size !== slugs.length) throw new Error("Algún producto del carrito no existe.");
+    const catalogo = await getCatalogo();
+    const bySlug = new Map(catalogo.products.map((p) => [p.slug, p]));
+    if (slugs.some((slug) => !bySlug.has(slug)))
+      throw new Error("Algún producto del carrito no existe.");
+    if (slugs.some((slug) => !(bySlug.get(slug)!.price > 0)))
+      throw new Error("Algún producto del carrito no tiene precio disponible.");
 
     const lines = data.items.map((i) => {
       const product = bySlug.get(i.slug)!;

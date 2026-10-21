@@ -24,7 +24,10 @@ export default defineTool({
       .maybeSingle();
     if (error) return { content: [{ type: "text", text: error.message }], isError: true };
     if (!order) {
-      return { content: [{ type: "text", text: `No se ha encontrado el pedido "${order_number}".` }], isError: true };
+      return {
+        content: [{ type: "text", text: `No se ha encontrado el pedido "${order_number}".` }],
+        isError: true,
+      };
     }
     const { data: items } = await supabase
       .from("order_items")

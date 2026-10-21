@@ -1,14 +1,18 @@
 import { Link } from "@tanstack/react-router";
 import { toast } from "sonner";
+import { Heart } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { ProductThumb } from "@/components/ProductThumb";
 import { useCart } from "@/lib/cart";
+import { useFavorites } from "@/lib/favorites";
 import { eur, precioAnterior } from "@/lib/format";
 import type { Producto } from "@/lib/catalog.functions";
 
 export function ProductCard({ product, oferta = false }: { product: Producto; oferta?: boolean }) {
   const { add } = useCart();
+  const { has, toggle } = useFavorites();
   const price = Number(product.price);
+  const favorite = has(product.slug);
 
   return (
     <article className="group relative flex flex-col border border-border bg-card transition-shadow hover:shadow-lg">
@@ -17,6 +21,18 @@ export function ProductCard({ product, oferta = false }: { product: Producto; of
           Oferta
         </span>
       )}
+      <Button
+        variant="ghost"
+        size="icon"
+        aria-label={
+          favorite ? `Quitar ${product.name} de favoritos` : `Guardar ${product.name} en favoritos`
+        }
+        title={favorite ? "Quitar de favoritos" : "Añadir a favoritos"}
+        onClick={() => toggle({ slug: product.slug, name: product.name })}
+        className="absolute top-2 right-2 z-10 bg-card/85 shadow-sm hover:text-primary"
+      >
+        <Heart className={favorite ? "fill-primary text-primary" : ""} />
+      </Button>
       <Link to="/producto/$slug" params={{ slug: product.slug }} className="block">
         <ProductThumb name={product.name} image={product.image} />
       </Link>

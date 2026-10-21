@@ -85,7 +85,6 @@ function CheckoutPage() {
     }
   }
 
-
   if (items.length === 0) {
     return (
       <div className="w-full px-4 py-20">
@@ -106,123 +105,126 @@ function CheckoutPage() {
     <div className="w-full px-4 py-12">
       <div className="mx-auto max-w-7xl">
         <h1 className="font-display text-3xl tracking-tight uppercase">Finalizar pedido</h1>
-      <span className="mt-2 block h-0.5 w-12 bg-primary" />
+        <span className="mt-2 block h-0.5 w-12 bg-primary" />
 
-      {sesion === false && (
-        <div className="mt-8 border border-primary/40 bg-primary/5 p-5">
-          <p className="text-sm">
-            Necesitas una cuenta para completar el pedido y seguir su estado.{" "}
-            <Link to="/auth" className="font-semibold text-primary underline">
-              Iniciar sesión o registrarse
-            </Link>
-          </p>
-        </div>
-      )}
-
-      <div className="mt-10 grid gap-10 lg:grid-cols-[1.4fr_1fr]">
-        <form onSubmit={onSubmit} className="space-y-5" noValidate>
-          <Campo id="name" label="Nombre y apellidos" error={errors['name']} />
-          <Campo id="street" label="Dirección" error={errors['street']} />
-          <div className="grid gap-5 sm:grid-cols-3">
-            <Campo
-              id="postal_code"
-              label="Código postal"
-              error={errors['postal_code']}
-              onChange={(v) => setZona((z) => ({ ...z, postal_code: v }))}
-            />
-            <Campo
-              id="city"
-              label="Localidad"
-              error={errors['city']}
-              onChange={(v) => setZona((z) => ({ ...z, city: v }))}
-            />
-            <Campo
-              id="province"
-              label="Provincia"
-              error={errors['province']}
-              onChange={(v) => setZona((z) => ({ ...z, province: v }))}
-            />
+        {sesion === false && (
+          <div className="mt-8 border border-primary/40 bg-primary/5 p-5">
+            <p className="text-sm">
+              Necesitas una cuenta para completar el pedido y seguir su estado.{" "}
+              <Link to="/auth" className="font-semibold text-primary underline">
+                Iniciar sesión o registrarse
+              </Link>
+            </p>
           </div>
+        )}
 
-          {zonaBloqueada && (
-            <div
-              role="alert"
-              className="flex gap-3 border border-primary bg-primary/5 p-4 text-sm"
-            >
-              <AlertTriangle className="mt-0.5 size-4 shrink-0 text-primary" aria-hidden />
-              <p>
-                <strong className="font-semibold">{MENSAJE_ZONA_EXCLUIDA}</strong> Indica una
-                dirección de la península o Baleares para continuar con el pedido.
-              </p>
-            </div>
-          )}
-
-          <fieldset className="border border-border p-5">
-            <legend className="px-2 font-display text-xs tracking-widest uppercase">
-              Método de pago
-            </legend>
-            <label className="flex items-start gap-3">
-              <input
-                type="radio"
-                name="payment_method"
-                value="tarjeta"
-                defaultChecked
-                className="mt-1 accent-[var(--color-primary)]"
+        <div className="mt-10 grid gap-10 lg:grid-cols-[1.4fr_1fr]">
+          <form onSubmit={onSubmit} className="space-y-5" noValidate>
+            <Campo id="name" label="Nombre y apellidos" error={errors["name"]} />
+            <Campo id="street" label="Dirección" error={errors["street"]} />
+            <div className="grid gap-5 sm:grid-cols-3">
+              <Campo
+                id="postal_code"
+                label="Código postal"
+                error={errors["postal_code"]}
+                onChange={(v) => setZona((z) => ({ ...z, postal_code: v }))}
               />
-              <span className="text-sm">
-                <span className="flex items-center gap-2 font-semibold">
-                  <CreditCard className="size-4 text-primary" aria-hidden />
-                  Tarjeta de crédito o débito
-                </span>
-                <span className="mt-1 block text-muted-foreground">
-                  Visa, Mastercard y American Express. Pago seguro con cifrado SSL. Es el único
-                  método de pago disponible.
-                </span>
-              </span>
-            </label>
-          </fieldset>
+              <Campo
+                id="city"
+                label="Localidad"
+                error={errors["city"]}
+                onChange={(v) => setZona((z) => ({ ...z, city: v }))}
+              />
+              <Campo
+                id="province"
+                label="Provincia"
+                error={errors["province"]}
+                onChange={(v) => setZona((z) => ({ ...z, province: v }))}
+              />
+            </div>
 
-          <div>
-            <label htmlFor="notes" className="font-display text-xs tracking-widest uppercase">
-              Notas del pedido
-            </label>
-            <textarea
-              id="notes"
-              name="notes"
-              rows={4}
-              maxLength={1000}
-              className="mt-2 w-full border border-input bg-background p-3 text-sm outline-none focus:border-primary"
-            />
-          </div>
-          <Button type="submit" size="lg" disabled={enviando || sesion === false || zonaBloqueada}>
-            {enviando ? "Enviando…" : "Confirmar pedido"}
-          </Button>
-          <p className="text-xs text-muted-foreground">
-            Solo aceptamos pago con tarjeta de crédito o débito. El cobro se realiza tras la
-            validación del arte final; te contactaremos para confirmarlo.
-          </p>
-          <p className="text-xs text-muted-foreground">{MENSAJE_ZONA_EXCLUIDA}</p>
+            {zonaBloqueada && (
+              <div
+                role="alert"
+                className="flex gap-3 border border-primary bg-primary/5 p-4 text-sm"
+              >
+                <AlertTriangle className="mt-0.5 size-4 shrink-0 text-primary" aria-hidden />
+                <p>
+                  <strong className="font-semibold">{MENSAJE_ZONA_EXCLUIDA}</strong> Indica una
+                  dirección de la península o Baleares para continuar con el pedido.
+                </p>
+              </div>
+            )}
 
-        </form>
-
-        <aside className="h-fit border border-border p-6">
-          <h2 className="font-display text-lg tracking-wide uppercase">Tu pedido</h2>
-          <ul className="mt-4 space-y-2 text-sm">
-            {items.map((i) => (
-              <li key={i.slug} className="flex justify-between gap-4">
-                <span className="min-w-0 truncate text-muted-foreground">
-                  {i.quantity} × {i.name}
+            <fieldset className="border border-border p-5">
+              <legend className="px-2 font-display text-xs tracking-widest uppercase">
+                Método de pago
+              </legend>
+              <label className="flex items-start gap-3">
+                <input
+                  type="radio"
+                  name="payment_method"
+                  value="tarjeta"
+                  defaultChecked
+                  className="mt-1 accent-[var(--color-primary)]"
+                />
+                <span className="text-sm">
+                  <span className="flex items-center gap-2 font-semibold">
+                    <CreditCard className="size-4 text-primary" aria-hidden />
+                    Tarjeta de crédito o débito
+                  </span>
+                  <span className="mt-1 block text-muted-foreground">
+                    Visa, Mastercard y American Express. Pago seguro con cifrado SSL. Es el único
+                    método de pago disponible.
+                  </span>
                 </span>
-                <span className="shrink-0">{eur(i.price * i.quantity)}</span>
-              </li>
-            ))}
-          </ul>
-          <div className="mt-4 flex justify-between border-t border-border pt-4 font-display text-lg uppercase">
-            <span>Total</span>
-            <span>{eur(total)}</span>
-          </div>
-        </aside>
-      </div>
+              </label>
+            </fieldset>
+
+            <div>
+              <label htmlFor="notes" className="font-display text-xs tracking-widest uppercase">
+                Notas del pedido
+              </label>
+              <textarea
+                id="notes"
+                name="notes"
+                rows={4}
+                maxLength={1000}
+                className="mt-2 w-full border border-input bg-background p-3 text-sm outline-none focus:border-primary"
+              />
+            </div>
+            <Button
+              type="submit"
+              size="lg"
+              disabled={enviando || sesion === false || zonaBloqueada}
+            >
+              {enviando ? "Enviando…" : "Confirmar pedido"}
+            </Button>
+            <p className="text-xs text-muted-foreground">
+              Solo aceptamos pago con tarjeta de crédito o débito. El cobro se realiza tras la
+              validación del arte final; te contactaremos para confirmarlo.
+            </p>
+            <p className="text-xs text-muted-foreground">{MENSAJE_ZONA_EXCLUIDA}</p>
+          </form>
+
+          <aside className="h-fit border border-border p-6">
+            <h2 className="font-display text-lg tracking-wide uppercase">Tu pedido</h2>
+            <ul className="mt-4 space-y-2 text-sm">
+              {items.map((i) => (
+                <li key={i.slug} className="flex justify-between gap-4">
+                  <span className="min-w-0 truncate text-muted-foreground">
+                    {i.quantity} × {i.name}
+                  </span>
+                  <span className="shrink-0">{eur(i.price * i.quantity)}</span>
+                </li>
+              ))}
+            </ul>
+            <div className="mt-4 flex justify-between border-t border-border pt-4 font-display text-lg uppercase">
+              <span>Total</span>
+              <span>{eur(total)}</span>
+            </div>
+          </aside>
+        </div>
       </div>
     </div>
   );

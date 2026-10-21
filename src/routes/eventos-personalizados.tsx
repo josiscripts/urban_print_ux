@@ -11,7 +11,10 @@ export const Route = createFileRoute("/eventos-personalizados")({
           "Decoración y personalización de eventos en Orihuela: candy bar, photocall, cartelería, etiquetas y detalles para invitados.",
       },
       { property: "og:title", content: "Eventos Personalizados | Urban Print" },
-      { property: "og:description", content: "Candy bar, photocall y cartelería para tu celebración." },
+      {
+        property: "og:description",
+        content: "Candy bar, photocall y cartelería para tu celebración.",
+      },
     ],
   }),
   component: () => (

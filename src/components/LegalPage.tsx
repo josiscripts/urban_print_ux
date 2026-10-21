@@ -21,7 +21,9 @@ export function LegalPage({
           <p className="font-display text-xs tracking-[0.3em] uppercase text-primary">
             Información legal
           </p>
-          <h1 className="mt-3 font-display text-3xl tracking-wide uppercase md:text-5xl">{title}</h1>
+          <h1 className="mt-3 font-display text-3xl tracking-wide uppercase md:text-5xl">
+            {title}
+          </h1>
           <span className="mt-4 block h-1 w-16 bg-primary" />
           <p className="mt-5 max-w-3xl text-sm text-ink-foreground/75 md:text-base">{intro}</p>
           <p className="mt-4 text-xs text-ink-foreground/50">Última actualización: {updated}</p>
@@ -35,7 +37,9 @@ export function LegalPage({
           </article>
 
           <aside className="h-fit border border-border bg-muted/40 p-6 lg:sticky lg:top-28">
-            <h2 className="font-display text-sm tracking-widest uppercase">Titular del sitio web</h2>
+            <h2 className="font-display text-sm tracking-widest uppercase">
+              Titular del sitio web
+            </h2>
             <span className="mt-2 block h-0.5 w-10 bg-primary" />
             <dl className="mt-4 space-y-3 text-sm text-foreground/80">
               <div>
@@ -75,7 +79,9 @@ export function LegalPage({
               </div>
             </dl>
 
-            <h2 className="mt-8 font-display text-sm tracking-widest uppercase">Otros documentos</h2>
+            <h2 className="mt-8 font-display text-sm tracking-widest uppercase">
+              Otros documentos
+            </h2>
             <span className="mt-2 block h-0.5 w-10 bg-primary" />
             <ul className="mt-4 space-y-2 text-sm">
               <li>

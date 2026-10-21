@@ -4,6 +4,7 @@ import {
   Link,
   createRootRouteWithContext,
   useRouter,
+  useRouterState,
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
@@ -13,7 +14,9 @@ import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { SiteHeader } from "@/components/SiteHeader";
 import { SiteFooter } from "@/components/SiteFooter";
+import { WhatsAppWidget } from "@/components/WhatsAppWidget";
 import { CartProvider } from "@/lib/cart";
+import { FavoritesProvider } from "@/lib/favorites";
 import { Toaster } from "@/components/ui/sonner";
 
 function NotFoundComponent() {
@@ -122,19 +125,28 @@ function RootShell({ children }: { children: ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+  const pathname = useRouterState({ select: (s) => s.location.pathname });
+  const esAdmin = pathname === "/admin" || pathname.startsWith("/admin/");
 
   return (
     <QueryClientProvider client={queryClient}>
       <CartProvider>
-        <div className="flex min-h-screen flex-col">
-          <SiteHeader />
-          <main className="flex-1">
-            {/* Required: nested routes render here. */}
+        <FavoritesProvider>
+          {esAdmin ? (
             <Outlet />
-          </main>
-          <SiteFooter />
-        </div>
-        <Toaster />
+          ) : (
+            <div className="flex min-h-screen flex-col">
+              <SiteHeader />
+              <main className="flex-1">
+                {/* Required: nested routes render here. */}
+                <Outlet />
+              </main>
+              <SiteFooter />
+              <WhatsAppWidget />
+            </div>
+          )}
+          <Toaster />
+        </FavoritesProvider>
       </CartProvider>
     </QueryClientProvider>
   );

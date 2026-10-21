@@ -78,7 +78,17 @@ export function ReviewsCarousel({ reviews }: { reviews: Review[] }) {
     }
   }, [isTransitioning]);
 
-  if (total === 0) return null;
+  if (total === 0)
+    return (
+      <div className="mt-8 rounded-lg border border-border bg-card/50 p-8 text-center">
+        <p className="text-muted-foreground">
+          No hay reseñas de 5 estrellas disponibles en este momento.
+        </p>
+        <p className="mt-2 text-sm text-muted-foreground">
+          Sé el primero en dejarnos una reseña en Google.
+        </p>
+      </div>
+    );
 
   const mobileTranslate = -index * 100;
   const desktopTranslate = -(index - 1) * (100 / 3);
@@ -134,7 +144,6 @@ export function ReviewsCarousel({ reviews }: { reviews: Review[] }) {
       >
         <ChevronRight className="size-5" />
       </button>
-
     </div>
   );
 }

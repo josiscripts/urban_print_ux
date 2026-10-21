@@ -131,14 +131,14 @@ function PrivacidadPage() {
 
         <LegalSubtitle>Base legal para el tratamiento de los datos personales</LegalSubtitle>
         <p>
-          La base legal para el tratamiento de los datos personales es el consentimiento. Urban Print
-          se compromete a recabar el consentimiento expreso y verificable del Usuario para el
+          La base legal para el tratamiento de los datos personales es el consentimiento. Urban
+          Print se compromete a recabar el consentimiento expreso y verificable del Usuario para el
           tratamiento de sus datos personales para uno o varios fines específicos.
         </p>
         <p>
           El Usuario tendrá derecho a retirar su consentimiento en cualquier momento. Será tan fácil
-          retirar el consentimiento como darlo. Como regla general, la retirada del consentimiento no
-          condicionará el uso del Sitio Web.
+          retirar el consentimiento como darlo. Como regla general, la retirada del consentimiento
+          no condicionará el uso del Sitio Web.
         </p>
         <p>
           En las ocasiones en las que el Usuario deba o pueda facilitar sus datos a través de
@@ -151,16 +151,16 @@ function PrivacidadPage() {
         <LegalSubtitle>Fines del tratamiento a que se destinan los datos personales</LegalSubtitle>
         <p>
           Los datos personales son recabados y gestionados por Urban Print con la finalidad de poder
-          facilitar, agilizar y cumplir los compromisos establecidos entre el Sitio Web y el Usuario,
-          o el mantenimiento de la relación que se establezca en los formularios que este último
-          rellene, o para atender una solicitud o consulta.
+          facilitar, agilizar y cumplir los compromisos establecidos entre el Sitio Web y el
+          Usuario, o el mantenimiento de la relación que se establezca en los formularios que este
+          último rellene, o para atender una solicitud o consulta.
         </p>
         <p>
-          Igualmente, los datos podrán ser utilizados con una finalidad comercial de personalización,
-          operativa y estadística, y actividades propias del objeto social de Urban Print, así como
-          para la extracción y almacenamiento de datos y estudios de marketing para adecuar el
-          Contenido ofertado al Usuario, así como mejorar la calidad, funcionamiento y navegación por
-          el Sitio Web.
+          Igualmente, los datos podrán ser utilizados con una finalidad comercial de
+          personalización, operativa y estadística, y actividades propias del objeto social de Urban
+          Print, así como para la extracción y almacenamiento de datos y estudios de marketing para
+          adecuar el Contenido ofertado al Usuario, así como mejorar la calidad, funcionamiento y
+          navegación por el Sitio Web.
         </p>
         <p>
           En el momento en que se obtengan los datos personales, se informará al Usuario acerca del
@@ -169,14 +169,14 @@ function PrivacidadPage() {
 
         <LegalSubtitle>Períodos de retención de los datos personales</LegalSubtitle>
         <p>
-          Los datos personales solo serán retenidos durante el tiempo mínimo necesario para los fines
-          de su tratamiento y, en todo caso, únicamente durante el siguiente plazo: 12 meses, o hasta
-          que el Usuario solicite su supresión.
+          Los datos personales solo serán retenidos durante el tiempo mínimo necesario para los
+          fines de su tratamiento y, en todo caso, únicamente durante el siguiente plazo: 12 meses,
+          o hasta que el Usuario solicite su supresión.
         </p>
         <p>
           En el momento en que se obtengan los datos personales, se informará al Usuario acerca del
-          plazo durante el cual se conservarán los datos personales o, cuando eso no sea posible, los
-          criterios utilizados para determinar este plazo.
+          plazo durante el cual se conservarán los datos personales o, cuando eso no sea posible,
+          los criterios utilizados para determinar este plazo.
         </p>
 
         <LegalSubtitle>Destinatarios de los datos personales</LegalSubtitle>
@@ -208,13 +208,14 @@ function PrivacidadPage() {
           Urban Print se compromete a adoptar las medidas técnicas y organizativas necesarias, según
           el nivel de seguridad adecuado al riesgo de los datos recogidos, de forma que se garantice
           la seguridad de los datos de carácter personal y se evite la destrucción, pérdida o
-          alteración accidental o ilícita de datos personales transmitidos, conservados o tratados de
-          otra forma, o la comunicación o acceso no autorizados a dichos datos.
+          alteración accidental o ilícita de datos personales transmitidos, conservados o tratados
+          de otra forma, o la comunicación o acceso no autorizados a dichos datos.
         </p>
         <p>
-          El Sitio Web cuenta con un certificado SSL (Secure Socket Layer), que asegura que los datos
-          personales se transmiten de forma segura y confidencial, al ser la transmisión de los datos
-          entre el servidor y el Usuario, y en retroalimentación, totalmente cifrada o encriptada.
+          El Sitio Web cuenta con un certificado SSL (Secure Socket Layer), que asegura que los
+          datos personales se transmiten de forma segura y confidencial, al ser la transmisión de
+          los datos entre el servidor y el Usuario, y en retroalimentación, totalmente cifrada o
+          encriptada.
         </p>
         <p>
           Sin embargo, debido a que Urban Print no puede garantizar la inexpugnabilidad de internet
@@ -224,10 +225,10 @@ function PrivacidadPage() {
           riesgo para los derechos y libertades de las personas físicas.
         </p>
         <p>
-          Los datos personales serán tratados como confidenciales por el Responsable del tratamiento,
-          quien se compromete a informar de ello y a garantizar, por medio de una obligación legal o
-          contractual, que dicha confidencialidad sea respetada por sus empleados, asociados y toda
-          persona a la cual le haga accesible la información.
+          Los datos personales serán tratados como confidenciales por el Responsable del
+          tratamiento, quien se compromete a informar de ello y a garantizar, por medio de una
+          obligación legal o contractual, que dicha confidencialidad sea respetada por sus
+          empleados, asociados y toda persona a la cual le haga accesible la información.
         </p>
 
         <LegalSubtitle>Derechos derivados del tratamiento de los datos personales</LegalSubtitle>
@@ -247,8 +248,8 @@ function PrivacidadPage() {
           ]}
         />
         <p>
-          Así pues, el Usuario podrá ejercitar sus derechos mediante comunicación escrita dirigida al
-          Responsable del tratamiento con la referencia «RGPD-www.urbanprint.es», especificando:
+          Así pues, el Usuario podrá ejercitar sus derechos mediante comunicación escrita dirigida
+          al Responsable del tratamiento con la referencia «RGPD-www.urbanprint.es», especificando:
         </p>
         <LegalList
           items={[
@@ -291,8 +292,8 @@ function PrivacidadPage() {
           En caso de que el Usuario considere que existe un problema o infracción de la normativa
           vigente en la forma en la que se están tratando sus datos personales, tendrá derecho a la
           tutela judicial efectiva y a presentar una reclamación ante una autoridad de control, en
-          particular en el Estado en el que tenga su residencia habitual, lugar de trabajo o lugar de
-          la supuesta infracción. En el caso de España, la autoridad de control es la Agencia
+          particular en el Estado en el que tenga su residencia habitual, lugar de trabajo o lugar
+          de la supuesta infracción. En el caso de España, la autoridad de control es la Agencia
           Española de Protección de Datos (
           <a
             href="https://www.aepd.es/"

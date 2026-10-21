@@ -11,7 +11,10 @@ export const Route = createFileRoute("/diseno-grafico")({
           "Diseño gráfico profesional en Orihuela: logotipos, identidad corporativa, artes finales y maquetación lista para imprenta.",
       },
       { property: "og:title", content: "Diseño Gráfico | Urban Print" },
-      { property: "og:description", content: "Identidad corporativa y artes finales listos para imprenta." },
+      {
+        property: "og:description",
+        content: "Identidad corporativa y artes finales listos para imprenta.",
+      },
     ],
   }),
   component: () => (

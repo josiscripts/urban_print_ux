@@ -1,13 +1,14 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { queryOptions, useSuspenseQuery } from "@tanstack/react-query";
 import { useState } from "react";
-import { Minus, Plus } from "lucide-react";
+import { Heart, Minus, Plus } from "lucide-react";
 import { toast } from "sonner";
 import { getCatalogo } from "@/lib/catalog.functions";
 import { ProductThumb } from "@/components/ProductThumb";
 import { ProductCard } from "@/components/ProductCard";
 import { Button } from "@/components/ui/button";
 import { useCart } from "@/lib/cart";
+import { useFavorites } from "@/lib/favorites";
 import { eur, precioAnterior } from "@/lib/format";
 
 const catalogoQuery = queryOptions({ queryKey: ["catalogo"], queryFn: () => getCatalogo() });
@@ -15,28 +16,18 @@ const catalogoQuery = queryOptions({ queryKey: ["catalogo"], queryFn: () => getC
 export const Route = createFileRoute("/producto/$slug")({
   loader: async ({ context, params }) => {
     const data = await context.queryClient.ensureQueryData(catalogoQuery);
-
-    // Validación defensiva: verificar que data y products existan
-    if (!data || !data.products || !Array.isArray(data.products)) {
-      console.error(`[Producto.$slug] ERROR: catálogo inválido`, {
-        hasData: !!data,
-        hasProducts: data ? !!data.products : false,
-        isArray: data && data.products ? Array.isArray(data.products) : false,
-      });
-      throw notFound();
-    }
-
-    // Búsqueda normal
     const producto = data.products.find((p) => p.slug === params.slug);
-    if (!producto) {
-      console.warn(`[Producto.$slug] Producto no encontrado: slug="${params.slug}" (total: ${data.products.length})`);
-      throw notFound();
-    }
+    if (!producto) throw notFound();
     return { nombre: producto.name, descripcion: producto.description };
   },
   head: ({ loaderData }) => {
     if (!loaderData) {
-      return { meta: [{ title: "Producto no disponible | Urban Print" }, { name: "robots", content: "noindex" }] };
+      return {
+        meta: [
+          { title: "Producto no disponible | Urban Print" },
+          { name: "robots", content: "noindex" },
+        ],
+      };
     }
     const title = `${loaderData.nombre} | Urban Print`;
     const description =
@@ -53,9 +44,7 @@ export const Route = createFileRoute("/producto/$slug")({
   component: ProductoPage,
   errorComponent: () => (
     <div className="w-full px-4 py-20">
-      <p className="mx-auto max-w-7xl text-muted-foreground">
-        No se ha podido cargar el producto.
-      </p>
+      <p className="mx-auto max-w-7xl text-muted-foreground">No se ha podido cargar el producto.</p>
     </div>
   ),
   notFoundComponent: () => (
@@ -74,10 +63,12 @@ function ProductoPage() {
   const { slug } = Route.useParams();
   const { data } = useSuspenseQuery(catalogoQuery);
   const { add } = useCart();
+  const { has, toggle } = useFavorites();
   const [cantidad, setCantidad] = useState(1);
 
   const producto = data.products.find((p) => p.slug === slug);
   if (!producto) return null;
+  const favorite = has(producto.slug);
 
   const categoria = data.categories.find((c) => c.id === producto.category_id);
   const relacionados = data.products
@@ -138,7 +129,9 @@ function ProductoPage() {
                   Archivos recomendados: PDF vectorizado, TIFF, JPG o Illustrator a 300 ppp en CMYK.
                   Revisamos tu archivo de forma gratuita antes de imprimir.
                 </li>
-                {categoria && <li>Categoría: {categoria.name}. Acabados y medidas a medida bajo consulta.</li>}
+                {categoria && (
+                  <li>Categoría: {categoria.name}. Acabados y medidas a medida bajo consulta.</li>
+                )}
                 <li>Envíos a península y Baleares, o recogida en nuestro taller de Orihuela.</li>
               </ul>
             </aside>
@@ -152,7 +145,9 @@ function ProductoPage() {
                 Oferta
               </span>
             </div>
-            <p className="mt-1 text-xs text-muted-foreground">IVA no incluido · Precio orientativo</p>
+            <p className="mt-1 text-xs text-muted-foreground">
+              IVA no incluido · Precio orientativo
+            </p>
 
             <div className="mt-8 flex flex-wrap items-center gap-3">
               <span className="text-sm">Cantidad</span>
@@ -172,7 +167,9 @@ function ProductoPage() {
                   max={999}
                   aria-label="Cantidad"
                   value={cantidad}
-                  onChange={(e) => setCantidad(Math.max(1, Math.min(999, Number(e.target.value) || 1)))}
+                  onChange={(e) =>
+                    setCantidad(Math.max(1, Math.min(999, Number(e.target.value) || 1)))
+                  }
                   className="h-full w-14 border-x border-input bg-background text-center text-sm outline-none [appearance:textfield] focus:border-primary [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
                 />
                 <button
@@ -199,14 +196,24 @@ function ProductoPage() {
               <Button asChild size="lg" variant="outline">
                 <Link to="/contacto">Consultar personalización</Link>
               </Button>
+              <Button
+                size="lg"
+                variant="outline"
+                aria-pressed={favorite}
+                onClick={() => toggle({ slug: producto.slug, name: producto.name })}
+              >
+                <Heart className={favorite ? "fill-primary text-primary" : ""} />
+                {favorite ? "Guardado" : "Guardar"}
+              </Button>
             </div>
           </div>
         </div>
 
-
         {relacionados.length > 0 && (
           <section className="mt-20">
-            <h2 className="font-display text-2xl tracking-tight uppercase">También te puede interesar</h2>
+            <h2 className="font-display text-2xl tracking-tight uppercase">
+              También te puede interesar
+            </h2>
             <span className="mt-2 block h-0.5 w-12 bg-primary" />
             <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
               {relacionados.map((p) => (

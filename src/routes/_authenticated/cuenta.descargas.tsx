@@ -10,7 +10,10 @@ export const Route = createFileRoute("/_authenticated/cuenta/descargas")({
 
 function DescargasPage() {
   const fetchDescargas = useServerFn(getDescargas);
-  const { data, isLoading } = useQuery({ queryKey: ["descargas"], queryFn: () => fetchDescargas() });
+  const { data, isLoading } = useQuery({
+    queryKey: ["descargas"],
+    queryFn: () => fetchDescargas(),
+  });
 
   return (
     <section>

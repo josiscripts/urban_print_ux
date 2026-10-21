@@ -8,8 +8,18 @@ export default defineTool({
   description:
     "Busca productos del catálogo público de Urban Print por texto y, opcionalmente, por slug de categoría.",
   inputSchema: {
-    query: z.string().trim().max(120).optional().describe("Texto a buscar en nombre o descripción."),
-    category_slug: z.string().trim().max(120).optional().describe("Slug de categoría para filtrar."),
+    query: z
+      .string()
+      .trim()
+      .max(120)
+      .optional()
+      .describe("Texto a buscar en nombre o descripción."),
+    category_slug: z
+      .string()
+      .trim()
+      .max(120)
+      .optional()
+      .describe("Slug de categoría para filtrar."),
     limit: z.number().int().min(1).max(50).default(20).describe("Número máximo de resultados."),
   },
   annotations: { readOnlyHint: true, idempotentHint: true, openWorldHint: false },
@@ -23,7 +33,10 @@ export default defineTool({
         .eq("slug", category_slug)
         .maybeSingle();
       if (!cat) {
-        return { content: [{ type: "text", text: `No existe la categoría "${category_slug}".` }], isError: true };
+        return {
+          content: [{ type: "text", text: `No existe la categoría "${category_slug}".` }],
+          isError: true,
+        };
       }
       categoryId = cat.id;
     }

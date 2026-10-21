@@ -11,7 +11,10 @@ export const Route = createFileRoute("/imprenta")({
           "Imprenta en Orihuela: tarjetas de visita, flyers, catálogos, papelería corporativa, adhesivos y sellos personalizados.",
       },
       { property: "og:title", content: "Imprenta General | Urban Print" },
-      { property: "og:description", content: "Papelería, flyers, catálogos y adhesivos con acabados profesionales." },
+      {
+        property: "og:description",
+        content: "Papelería, flyers, catálogos y adhesivos con acabados profesionales.",
+      },
     ],
   }),
   component: () => (

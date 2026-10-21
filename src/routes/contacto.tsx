@@ -17,7 +17,10 @@ export const Route = createFileRoute("/contacto")({
           "Contacta con Urban Print en Calle Comunidad Valenciana 2, Orihuela. Presupuestos de impresión sin compromiso.",
       },
       { property: "og:title", content: "Contacto | Urban Print Orihuela" },
-      { property: "og:description", content: "Escríbenos y te preparamos un presupuesto a medida." },
+      {
+        property: "og:description",
+        content: "Escríbenos y te preparamos un presupuesto a medida.",
+      },
     ],
   }),
   component: ContactoPage,
@@ -70,12 +73,12 @@ function ContactoPage() {
         <div className="mt-10 grid gap-12 lg:grid-cols-[1.3fr_1fr]">
           <form onSubmit={onSubmit} className="space-y-5" noValidate>
             <div className="grid gap-5 sm:grid-cols-2">
-              <Campo id="name" label="Nombre" error={errors['name']} />
-              <Campo id="email" label="Email" type="email" error={errors['email']} />
+              <Campo id="name" label="Nombre" error={errors["name"]} />
+              <Campo id="email" label="Email" type="email" error={errors["email"]} />
             </div>
             <div className="grid gap-5 sm:grid-cols-2">
-              <Campo id="phone" label="Teléfono (opcional)" error={errors['phone']} />
-              <Campo id="subject" label="Asunto" error={errors['subject']} />
+              <Campo id="phone" label="Teléfono (opcional)" error={errors["phone"]} />
+              <Campo id="subject" label="Asunto" error={errors["subject"]} />
             </div>
             <div>
               <label htmlFor="message" className="font-display text-xs tracking-widest uppercase">
@@ -87,9 +90,11 @@ function ContactoPage() {
                 rows={6}
                 maxLength={2000}
                 className="mt-2 w-full border border-input bg-background p-3 text-sm outline-none focus:border-primary"
-                aria-invalid={Boolean(errors['message'])}
+                aria-invalid={Boolean(errors["message"])}
               />
-              {errors['message'] && <p className="mt-1 text-xs text-primary">{errors['message']}</p>}
+              {errors["message"] && (
+                <p className="mt-1 text-xs text-primary">{errors["message"]}</p>
+              )}
             </div>
             <Button type="submit" size="lg" disabled={enviando}>
               {enviando ? "Enviando…" : "Enviar consulta"}

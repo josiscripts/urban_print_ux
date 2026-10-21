@@ -1,5 +1,4 @@
 import { createServerFn } from "@tanstack/react-start";
-import { publicSupabase } from "./supabase-public.server";
 import { getWooCommerceClient } from "./woocommerce/client.server";
 import type { WooProduct } from "./woocommerce/types";
 import {
@@ -103,18 +102,64 @@ export const getCatalogo = createServerFn({ method: "GET" }).handler(async () =>
   }
 });
 
-/**
- * getReviews() - Obtiene reseñas
- * FASE 2: Sigue usando Supabase (no migrado a WooCommerce)
- *
- * Mantiene la fuente en Supabase de momento.
- * Será revisado en futuras fases si WooCommerce tiene datos de reseñas.
- */
+async function getGoogleFiveStarReviews() {
+  const apiKey = process.env['GOOGLE_PLACES_API_KEY'];
+  const placeId = process.env['GOOGLE_PLACE_ID'];
+
+  console.log("[REVIEWS] Fetching reviews for placeId:", placeId);
+
+  if (!apiKey || apiKey === "MI_API_KEY" || !placeId || placeId === "MI_PLACE_ID") {
+    console.log("[REVIEWS] Missing credentials");
+    return [];
+  }
+
+  try {
+    // Usar Web Service API (antiguo) que SÍ devuelve reviews
+    // El endpoint v1/places NO devuelve reviews, por eso usamos el antiguo nearbySearch/details
+    const url = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${placeId}&key=${apiKey}&fields=reviews,rating`;
+
+    console.log("[REVIEWS] Requesting URL:", url.substring(0, 100) + "...");
+    const response = await fetch(url);
+
+    console.log("[REVIEWS] Response status:", response.status);
+
+    if (!response.ok) {
+      console.log("[REVIEWS] Request failed");
+      return [];
+    }
+
+    const data = await response.json();
+    console.log("[REVIEWS] Response data:", JSON.stringify(data).substring(0, 500));
+
+    if (data.status !== "OK" || !data.result?.reviews || data.result.reviews.length === 0) {
+      return [];
+    }
+
+    // Filtrar SOLO reseñas con exactamente 5 estrellas
+    const fiveStarReviews = data.result.reviews.filter((review: any) => review.rating === 5);
+
+    // Transformar al formato esperado por ReviewsCarousel
+    return fiveStarReviews.map((review: any, index: number) => ({
+      id: `google-${index}`,
+      author: review.author_name || "Anonymous",
+      rating: review.rating,
+      content: review.text || "",
+    }));
+  } catch (error) {
+    console.error("Error fetching Google reviews:", error);
+    return [];
+  }
+}
+
 export const getReviews = createServerFn({ method: "GET" }).handler(async () => {
-  const supabase = publicSupabase();
-  const { data } = await supabase
-    .from("reviews")
-    .select("id, author, rating, content")
-    .order("position");
-  return data ?? [];
+  try {
+    // Obtener reseñas de 5 estrellas de Google Places API
+    // Sin fallback a Supabase - solo reseñas reales de Google
+    const googleReviews = await getGoogleFiveStarReviews();
+    return googleReviews;
+  } catch (error) {
+    console.error("Error fetching reviews from Google:", error);
+    // No fallback to Supabase - if Google fails, no reviews shown
+    return [];
+  }
 });

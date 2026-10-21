@@ -1,37 +1,23 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { queryOptions, useSuspenseQuery } from "@tanstack/react-query";
-import { ArrowRight, Award, Clock, Palette, Truck } from "lucide-react";
+import {
+  ArrowRight,
+  BadgeCheck,
+  MapPin,
+  MessagesSquare,
+  PackageCheck,
+  Palette,
+  PenTool,
+  Truck,
+  Zap,
+} from "lucide-react";
 import { getCatalogo, getReviews } from "@/lib/catalog.functions";
 import { CATEGORIAS, CATEGORIA_TITULOS, EMPRESA } from "@/lib/site";
 import { FeaturedCarousel } from "@/components/FeaturedCarousel";
 import { ProductThumb } from "@/components/ProductThumb";
 import { ReviewsCarousel } from "@/components/ReviewsCarousel";
 import { Button } from "@/components/ui/button";
-
-// Imagen del hero
-import heroImage from "@/assets/hero/hero-urbanprint.png";
-
-// Imágenes de categorías
-import imgImprenta from "@/assets/categories/categoria-imprenta.png";
-import imgGranFormato from "@/assets/categories/categoria-gran-formato.png";
-import imgTextil from "@/assets/categories/categoria-textil.png";
-import imgMerchandising from "@/assets/categories/categoria-merchandising.png";
-import imgEventos from "@/assets/categories/categoria-eventos.png";
-import imgBodas from "@/assets/categories/categoria-bodas.png";
-import imgSellos from "@/assets/categories/categoria-sellos.png";
-import imgRegalos from "@/assets/categories/categoria-regalos-personalizados.png";
-
-// Mapeo de slugs de categorías a imágenes
-const categoriaImagen: Record<string, string | null> = {
-  imprenta: imgImprenta,
-  "gran-formato": imgGranFormato,
-  "impresion-textil": imgTextil,
-  merchandising: imgMerchandising,
-  eventos: imgEventos,
-  bodas: imgBodas,
-  sellos: imgSellos,
-  "regalos-personalizados": imgRegalos,
-};
+import heroImageUrl from "@/assets/tienda_portada.png";
 import {
   Accordion,
   AccordionContent,
@@ -62,16 +48,38 @@ export const Route = createFileRoute("/")({
         property: "og:description",
         content: "Impresión, textil, merchandising y personalización con producción propia.",
       },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
   component: Home,
 });
 
 const VENTAJAS = [
-  { icon: Clock, titulo: "Entregas rápidas", texto: "Producción propia y plazos ajustados." },
-  { icon: Palette, titulo: "Diseño incluido", texto: "Te ayudamos con el arte final." },
-  { icon: Award, titulo: "Calidad garantizada", texto: "Materiales y tintas profesionales." },
-  { icon: Truck, titulo: "Envíos península y Baleares", texto: "Recogida en tienda o entrega a domicilio." },
+  {
+    icon: PackageCheck,
+    titulo: "Entregas rápidas",
+    texto: (
+      <>
+        Plazos ajustados, porque
+        <br />
+        tu tiempo importa.
+      </>
+    ),
+  },
+  {
+    icon: PenTool,
+    titulo: "Diseño incluido",
+    texto: (
+      <>
+        Tu proyecto, con el mejor
+        <br />
+        diseño.
+      </>
+    ),
+  },
+  { icon: BadgeCheck, titulo: "Calidad garantizada", texto: <>Materiales profesionales.</> },
+  { icon: MessagesSquare, titulo: "Atención personalizada", texto: <>Resolución y cercanía.</> },
 ];
 
 const FAQS = [
@@ -106,70 +114,171 @@ function Home() {
 
   return (
     <div>
-      <section className="border-b border-border bg-ink text-ink-foreground">
-        <div className="mx-auto grid max-w-7xl items-center gap-10 px-4 py-20 lg:grid-cols-2">
-          <div>
-            <span className="block h-1 w-16 bg-primary" />
-            <h1 className="mt-6 font-display text-4xl leading-[0.95] tracking-tight uppercase md:text-6xl">
-              Impresión y personalización
+      <section className="relative isolate min-h-[100svh] w-full overflow-hidden bg-hero-black text-ink-foreground xl:hidden">
+        <div className="absolute inset-x-0 top-0 -z-20 h-[68svh] min-h-[32rem] overflow-hidden sm:h-[70svh]">
+          <img
+            src={heroImageUrl}
+            alt="Interior del taller Urban Print con maquinaria de impresión y productos personalizados"
+            className="h-full w-full object-cover object-[62%_center] sm:object-[58%_center]"
+            fetchPriority="high"
+          />
+        </div>
+        <div
+          className="absolute inset-x-0 top-0 -z-10 h-[76svh] min-h-[36rem] bg-[linear-gradient(to_bottom,color-mix(in_oklab,var(--hero-black)_8%,transparent)_0%,color-mix(in_oklab,var(--hero-black)_12%,transparent)_48%,color-mix(in_oklab,var(--hero-black)_55%,transparent)_68%,color-mix(in_oklab,var(--hero-black)_92%,transparent)_82%,var(--hero-black)_94%,var(--hero-black)_100%)]"
+          aria-hidden
+        />
+        <div className="w-full px-5 pb-10 pt-[59svh] sm:px-10 sm:pb-14 sm:pt-[60svh] md:px-14 lg:px-20">
+          <div className="max-w-2xl">
+            <div className="flex items-center gap-3 text-[0.65rem] font-semibold tracking-[0.22em] text-ink-foreground/80 uppercase sm:text-xs">
+              <span className="h-0.5 w-9 shrink-0 bg-primary" />
+              <span>Tu idea. Nuestra impresión</span>
+            </div>
+            <h1 className="mt-4 font-sans text-[2.2rem] font-bold leading-[0.94] tracking-[0em] uppercase min-[390px]:text-[2.45rem] sm:text-[3.75rem] md:text-[4.25rem]">
+              <span className="block">Impresión y</span>
+              <span className="block">personalización</span>
               <span className="block text-primary">hecha en Orihuela</span>
             </h1>
-            <p className="mt-5 max-w-xl text-ink-foreground/70">
-              Imprenta general, gran formato, textil, merchandising, sellos y detalles para bodas y
-              eventos. Todo con producción propia y asesoramiento directo.
+            <p className="mt-4 max-w-lg text-sm leading-relaxed text-ink-foreground/82 sm:text-lg">
+              Impresión general, gran formato,
+              <br /> textil, merchandising y mucho más.
             </p>
-            <div className="mt-8 flex flex-wrap gap-3">
-              <Button asChild size="lg" className="micro-scale">
+            <div className="mt-6 grid w-full max-w-lg gap-3">
+              <Button
+                asChild
+                size="lg"
+                className="group micro-scale h-13 w-full rounded-none font-semibold uppercase"
+              >
                 <Link to="/categoria/$slug" params={{ slug: "imprenta" }}>
-                  Ver catálogo <ArrowRight className="size-4" />
+                  Ver catálogo{" "}
+                  <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
                 </Link>
               </Button>
               <Button
                 asChild
                 size="lg"
                 variant="outline"
-                className="micro-scale border-ink-foreground/40 bg-transparent text-ink-foreground hover:bg-ink-foreground hover:text-ink"
+                className="group micro-scale h-13 w-full rounded-none border-ink-foreground/65 bg-transparent font-semibold text-ink-foreground uppercase hover:bg-ink-foreground hover:text-ink"
               >
-                <Link to="/contacto">Pedir presupuesto</Link>
+                <Link to="/contacto">
+                  Pedir presupuesto{" "}
+                  <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
+                </Link>
               </Button>
-
             </div>
           </div>
-          <ProductThumb name="Urban Print · Taller de impresión" image={heroImage} ratio="wide" />
         </div>
       </section>
 
-      <section className="border-b border-border">
-        <div className="mx-auto grid max-w-7xl gap-6 px-4 py-10 sm:grid-cols-2 lg:grid-cols-4">
-          {VENTAJAS.map(({ icon: Icon, titulo, texto }) => (
-            <div key={titulo} className="flex gap-3">
+      <section
+        aria-label="Ventajas de Urban Print"
+        className="border-b border-border bg-background px-4 py-5 xl:hidden"
+      >
+        <div className="mx-auto grid max-w-4xl grid-cols-2 gap-px overflow-hidden border border-border bg-border sm:grid-cols-4">
+          {[
+            { icon: Zap, title: "Entrega rápida", text: "Plazos ajustados" },
+            { icon: Palette, title: "Diseño incluido", text: "Te ayudamos a crear" },
+            { icon: BadgeCheck, title: "Calidad garantizada", text: "Acabado profesional" },
+            { icon: Truck, title: "Envíos península y Baleares", text: "Entrega segura" },
+          ].map(({ icon: Icon, title, text }) => (
+            <div
+              key={title}
+              className="flex min-h-28 min-w-0 flex-col justify-center bg-background p-4 sm:min-h-32"
+            >
               <Icon className="size-6 shrink-0 text-primary" aria-hidden />
-              <div className="min-w-0">
-                <h2 className="font-display text-sm tracking-wide uppercase">{titulo}</h2>
-                <p className="text-sm text-muted-foreground">{texto}</p>
-              </div>
+              <h2 className="mt-3 text-xs font-bold leading-tight uppercase">{title}</h2>
+              <p className="mt-1 text-[0.7rem] leading-snug text-muted-foreground">{text}</p>
             </div>
           ))}
         </div>
       </section>
 
-      <section className="w-full px-4 py-16">
+      <section className="hidden overflow-hidden bg-hero-surface text-ink-foreground xl:block">
+        <div className="grid min-h-[calc(100svh-15rem)] grid-cols-1 sm:min-h-[calc(100svh-17rem)] xl:min-h-[clamp(31rem,calc(100svh-13.5rem),47rem)] xl:grid-cols-[44%_56%]">
+          <div className="relative z-10 flex [grid-area:1/1] items-center px-5 py-10 sm:px-8 sm:py-12 lg:px-[clamp(2rem,7vw,5rem)] xl:[grid-area:auto] xl:py-10 xl:pr-0 xl:pl-[clamp(2rem,5vw,5rem)]">
+            <div className="w-full max-w-[38rem] xl:max-w-[41rem]">
+              <div className="flex items-center gap-4 text-[0.68rem] font-medium tracking-[0.28em] text-ink-foreground/75 uppercase sm:text-xs">
+                <span className="h-0.5 w-10 shrink-0 bg-primary sm:w-12" />
+                <span>Tu idea, nuestra impresión</span>
+              </div>
+              <h1 className="mt-5 font-sans text-[2.35rem] font-bold leading-[0.94] tracking-[0.01em] uppercase min-[390px]:text-[2.65rem] sm:mt-6 sm:text-[clamp(3.5rem,7vw,4rem)] xl:text-[clamp(2.45rem,5vw,5.35rem)]">
+                <span className="block">Impresión y</span>
+                <span className="block">personalización</span>
+                <span className="block text-primary">hecha en Orihuela</span>
+              </h1>
+              <p className="mt-5 max-w-xl text-base leading-relaxed text-ink-foreground/76 sm:mt-6 sm:text-lg xl:text-[clamp(1rem,1.35vw,1.35rem)]">
+                Impresión general, gran formato,
+                <br className="hidden sm:block" /> textil, merchandising y mucho más.
+              </p>
+              <div className="mt-7 flex w-fit max-w-full flex-col gap-3 sm:mt-8 sm:flex-row">
+                <Button
+                  asChild
+                  size="lg"
+                  className="group micro-scale h-12 rounded-full px-7 font-semibold sm:h-13 sm:min-w-52 sm:px-8"
+                >
+                  <Link to="/categoria/$slug" params={{ slug: "imprenta" }}>
+                    Ver catálogo{" "}
+                    <ArrowRight className="size-4 transition-transform group-hover:translate-x-1" />
+                  </Link>
+                </Button>
+                <Button
+                  asChild
+                  size="lg"
+                  variant="outline"
+                  className="micro-scale h-12 rounded-full border-ink-foreground/60 bg-transparent px-7 font-semibold text-ink-foreground hover:bg-ink-foreground/10 hover:text-ink-foreground sm:h-13 sm:min-w-52 sm:px-8"
+                >
+                  <Link to="/contacto">Pedir presupuesto</Link>
+                </Button>
+              </div>
+            </div>
+          </div>
+          <div className="hero-image-blend relative min-h-0 [grid-area:1/1] overflow-hidden xl:[grid-area:auto]">
+            <img
+              src={heroImageUrl}
+              alt="Interior del taller Urban Print con maquinaria de impresión y productos personalizados"
+              className="h-full w-full object-cover object-[64%_center] sm:object-[61%_center] lg:object-[58%_center]"
+              fetchPriority="high"
+            />
+          </div>
+        </div>
+
+        <div className="border-t border-ink-foreground/10 bg-hero-panel/94">
+          <div className="mx-auto grid max-w-[96rem] grid-cols-2 px-4 sm:px-8 xl:grid-cols-4 xl:px-[clamp(2rem,5vw,5rem)]">
+            {VENTAJAS.map(({ icon: Icon, titulo, texto }) => (
+              <div
+                key={titulo}
+                className="flex min-h-24 flex-col justify-center gap-2 border-b border-ink-foreground/10 py-4 odd:pr-3 even:border-l even:pl-3 nth-[3]:border-b-0 nth-[4]:border-b-0 sm:min-h-26 sm:flex-row sm:items-center sm:justify-start sm:gap-4 sm:odd:pr-5 sm:even:pl-5 xl:min-h-32 xl:border-b-0 xl:border-l xl:px-7 xl:first:border-l-0 xl:first:pl-0 xl:last:pr-0"
+              >
+                <Icon
+                  className="size-7 shrink-0 stroke-[1.5] text-primary sm:size-8 xl:size-9"
+                  aria-hidden
+                />
+                <div className="min-w-0">
+                  <h2 className="font-sans text-[0.68rem] font-bold tracking-[0.02em] uppercase sm:text-xs">
+                    {titulo}
+                  </h2>
+                  <p className="mt-1 text-[0.68rem] leading-snug text-ink-foreground/68 sm:text-xs sm:leading-relaxed">
+                    {texto}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section id="categorias" className="w-full scroll-mt-24 px-4 py-16">
         <div className="mx-auto max-w-7xl">
           <h2 className="font-display text-3xl tracking-tight uppercase">Categorías</h2>
           <span className="mt-2 block h-0.5 w-12 bg-primary" />
-          <div className="mt-8 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+          <div className="-mx-4 mt-8 flex snap-x snap-mandatory gap-4 overflow-x-auto px-4 pb-3 [scrollbar-width:none] [&::-webkit-scrollbar]:hidden sm:mx-0 sm:grid sm:grid-cols-2 sm:overflow-visible sm:px-0 sm:pb-0 xl:grid-cols-4">
             {CATEGORIAS.map((cat) => (
               <Link
                 key={cat.slug}
                 to="/categoria/$slug"
                 params={{ slug: cat.slug }}
-                className="group flex flex-col border border-border transition-shadow hover:shadow-lg"
+                className="group flex w-[82vw] max-w-80 shrink-0 snap-start flex-col border border-border bg-card transition-shadow hover:shadow-lg sm:w-auto sm:max-w-none"
               >
-                <ProductThumb
-                  name={CATEGORIA_TITULOS[cat.slug] ?? cat.name}
-                  image={categoriaImagen[cat.slug]}
-                  ratio="wide"
-                />
+                <ProductThumb name={CATEGORIA_TITULOS[cat.slug] ?? cat.name} ratio="wide" />
                 <div className="flex flex-1 flex-col gap-2 p-4">
                   <span className="font-display tracking-wide uppercase">
                     {CATEGORIA_TITULOS[cat.slug] ?? cat.name}
@@ -183,11 +292,10 @@ function Home() {
               </Link>
             ))}
           </div>
-
         </div>
       </section>
 
-      <section className="w-full bg-muted/50">
+      <section id="destacados" className="w-full scroll-mt-24 bg-muted/50">
         <div className="mx-auto max-w-7xl px-4 py-16">
           <h2 className="font-display text-3xl tracking-tight uppercase">Productos destacados</h2>
           <span className="mt-2 block h-0.5 w-12 bg-primary" />
@@ -203,16 +311,15 @@ function Home() {
         </div>
       </section>
 
-
-      {reviews.length > 0 && (
-        <section className="border-y border-border bg-muted/50">
-          <div className="mx-auto max-w-7xl px-4 py-16">
-            <h2 className="font-display text-3xl tracking-tight uppercase">Opiniones de clientes</h2>
-            <span className="mt-2 block h-0.5 w-12 bg-primary" />
-            <ReviewsCarousel reviews={reviews} />
-          </div>
-        </section>
-      )}
+      <section className="border-y border-border bg-muted/50">
+        <div className="mx-auto max-w-7xl px-4 py-16">
+          <h2 className="font-display text-3xl tracking-tight uppercase">
+            Opiniones de clientes
+          </h2>
+          <span className="mt-2 block h-0.5 w-12 bg-primary" />
+          <ReviewsCarousel reviews={reviews} />
+        </div>
+      </section>
 
       <section id="faq" className="w-full border-y border-border bg-background">
         <div className="mx-auto max-w-3xl px-4 py-16">
@@ -221,7 +328,8 @@ function Home() {
           </h2>
           <span className="mx-auto mt-2 block h-0.5 w-12 bg-primary" />
           <p className="mx-auto mt-4 max-w-xl text-center text-sm text-muted-foreground">
-            Resolvemos las dudas más habituales sobre envío de archivos, formatos, envíos y presupuestos.
+            Resolvemos las dudas más habituales sobre envío de archivos, formatos, envíos y
+            presupuestos.
           </p>
           <Accordion type="single" collapsible className="mt-8">
             {FAQS.map((faq, index) => (
