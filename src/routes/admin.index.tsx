@@ -36,7 +36,7 @@ function AdminDashboard() {
   const menorMargen = [...conCostes].sort((a, b) => a.margenNeto - b.margenNeto).slice(0, 5);
   const sinCostes = filas.filter((f) => !f.configurado);
   const historial = (data?.history ?? []).slice(0, 8);
-  const nombrePorId = new Map(filas.map((f) => [f.id, f.name]));
+  const nombrePorId = new Map(filas.map((f) => [f.slug, f.name]));
 
   return (
     <>
@@ -140,7 +140,7 @@ function AdminDashboard() {
                   {historial.map((h) => (
                     <li key={h.id} className="flex items-center justify-between gap-3 py-2 text-sm">
                       <span className="min-w-0 truncate">
-                        {nombrePorId.get(h.product_id) ?? "Producto"}
+                        {nombrePorId.get(h.product_slug ?? "") ?? "Producto"}
                       </span>
                       <span className="shrink-0 tabular-nums text-muted-foreground">
                         {eur(Number(h.previous_total))} → {eur(Number(h.new_total))} ·{" "}

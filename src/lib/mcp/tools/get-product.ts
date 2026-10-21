@@ -1,6 +1,6 @@
 import { defineTool } from "@lovable.dev/mcp-js";
 import { z } from "zod";
-import { supabaseAnon } from "../supabase";
+import { getCatalogo } from "@/lib/catalog.functions";
 
 export default defineTool({
   name: "get_product",
@@ -9,21 +9,27 @@ export default defineTool({
   inputSchema: { slug: z.string().trim().min(1).max(160).describe("Slug del producto.") },
   annotations: { readOnlyHint: true, idempotentHint: true, openWorldHint: false },
   handler: async ({ slug }) => {
-    const supabase = supabaseAnon();
-    const { data, error } = await supabase
-      .from("products")
-      .select("slug, name, price, description, featured, category_id")
-      .eq("slug", slug)
-      .maybeSingle();
-    if (error) return { content: [{ type: "text", text: error.message }], isError: true };
+    // Catálogo y precios desde WooCommerce; si Woo falla, el error se devuelve tal cual.
+    const { products } = await getCatalogo();
+    const data = products.find((p) => p.slug === slug);
     if (!data)
       return {
         content: [{ type: "text", text: `No se ha encontrado el producto "${slug}".` }],
         isError: true,
       };
+    const producto = {
+      slug: data.slug,
+      name: data.name,
+      price: data.price,
+      description: data.description,
+      featured: data.featured,
+      category_id: data.category_id,
+      disponible: data.disponible,
+      stock_quantity: data.stock_quantity,
+    };
     return {
-      content: [{ type: "text", text: JSON.stringify(data) }],
-      structuredContent: { product: data },
+      content: [{ type: "text", text: JSON.stringify(producto) }],
+      structuredContent: { product: producto },
     };
   },
 });

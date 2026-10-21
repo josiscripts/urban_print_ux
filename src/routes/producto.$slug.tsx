@@ -140,7 +140,9 @@ function ProductoPage() {
               <span className="text-base text-muted-foreground line-through">
                 {eur(precioAnterior(Number(producto.price)))}
               </span>
-              <p className="text-3xl font-bold text-primary">{eur(Number(producto.price))}</p>
+              <p className="text-3xl font-bold text-primary">
+                {Number(producto.price) > 0 ? eur(Number(producto.price)) : "Precio no disponible"}
+              </p>
               <span className="bg-primary px-2 py-1 font-display text-[0.65rem] tracking-widest text-primary-foreground uppercase">
                 Oferta
               </span>
@@ -183,6 +185,7 @@ function ProductoPage() {
               </div>
               <Button
                 size="lg"
+                disabled={!producto.disponible}
                 onClick={() => {
                   add(
                     { slug: producto.slug, name: producto.name, price: Number(producto.price) },
@@ -191,7 +194,7 @@ function ProductoPage() {
                   toast.success(`${producto.name} añadido al carrito`);
                 }}
               >
-                Añadir al carrito
+                {producto.disponible ? "Añadir al carrito" : "No disponible"}
               </Button>
               <Button asChild size="lg" variant="outline">
                 <Link to="/contacto">Consultar personalización</Link>

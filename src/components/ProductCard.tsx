@@ -56,16 +56,17 @@ export function ProductCard({ product, oferta = false }: { product: Producto; of
             </span>
           )}
           <span className={oferta ? "text-xl font-bold text-primary" : "text-lg font-semibold"}>
-            {eur(price)}
+            {price > 0 ? eur(price) : "Precio no disponible"}
           </span>
         </div>
         <Button
+          disabled={!product.disponible}
           onClick={() => {
             add({ slug: product.slug, name: product.name, price });
             toast.success(`${product.name} añadido al carrito`);
           }}
         >
-          Añadir al carrito
+          {product.disponible ? "Añadir al carrito" : "No disponible"}
         </Button>
       </div>
     </article>

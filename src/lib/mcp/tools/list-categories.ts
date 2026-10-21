@@ -1,6 +1,6 @@
 import { defineTool } from "@lovable.dev/mcp-js";
 import { z } from "zod";
-import { supabaseAnon } from "../supabase";
+import { getCatalogo } from "@/lib/catalog.functions";
 
 export default defineTool({
   name: "list_categories",
@@ -16,14 +16,10 @@ export default defineTool({
   },
   annotations: { readOnlyHint: true, idempotentHint: true, openWorldHint: false },
   handler: async ({ parent_slug }) => {
-    const supabase = supabaseAnon();
+    const { categories } = await getCatalogo();
     let parentId: string | null | undefined;
     if (parent_slug) {
-      const { data: parent } = await supabase
-        .from("categories")
-        .select("id")
-        .eq("slug", parent_slug)
-        .maybeSingle();
+      const parent = categories.find((c) => c.slug === parent_slug);
       if (!parent) {
         return {
           content: [{ type: "text", text: `No existe la categoría "${parent_slug}".` }],
@@ -32,16 +28,19 @@ export default defineTool({
       }
       parentId = parent.id;
     }
-    let q = supabase
-      .from("categories")
-      .select("slug, name, description, parent_id, position")
-      .order("position");
-    if (parentId) q = q.eq("parent_id", parentId);
-    const { data, error } = await q;
-    if (error) return { content: [{ type: "text", text: error.message }], isError: true };
+    const data = categories
+      .filter((c) => (parentId ? c.parent_id === parentId : true))
+      .sort((a, b) => a.position - b.position)
+      .map((c) => ({
+        slug: c.slug,
+        name: c.name,
+        description: c.description,
+        parent_id: c.parent_id,
+        position: c.position,
+      }));
     return {
-      content: [{ type: "text", text: JSON.stringify(data ?? []) }],
-      structuredContent: { categories: data ?? [] },
+      content: [{ type: "text", text: JSON.stringify(data) }],
+      structuredContent: { categories: data },
     };
   },
 });

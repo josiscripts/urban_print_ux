@@ -33,8 +33,8 @@ const VACIO = {
   amount: "",
   is_percentage: true,
   scope: "global" as "global" | "categoria" | "producto",
-  category_id: "",
-  product_id: "",
+  category_slug: "",
+  product_slug: "",
   active: true,
   notes: "",
 };
@@ -50,10 +50,10 @@ function AdminGastos() {
   const categorias = data?.categories ?? [];
   const productos = data?.products ?? [];
   const nombreCategoria = useMemo(
-    () => new Map(categorias.map((c) => [c.id, c.name])),
+    () => new Map(categorias.map((c) => [c.slug, c.name])),
     [categorias],
   );
-  const nombreProducto = useMemo(() => new Map(productos.map((p) => [p.id, p.name])), [productos]);
+  const nombreProducto = useMemo(() => new Map(productos.map((p) => [p.slug, p.name])), [productos]);
 
   async function enviar() {
     if (!form.name.trim()) {
@@ -69,8 +69,8 @@ function AdminGastos() {
           amount: Number(form.amount) || 0,
           is_percentage: form.is_percentage,
           scope: form.scope,
-          category_id: form.category_id || null,
-          product_id: form.product_id || null,
+          category_slug: form.category_slug || null,
+          product_slug: form.product_slug || null,
           active: form.active,
           notes: form.notes.trim() || null,
         },
@@ -92,8 +92,8 @@ function AdminGastos() {
   function ambito(g: Gasto) {
     if (g.scope === "global") return "Todos los productos";
     if (g.scope === "categoria")
-      return `Categoría: ${nombreCategoria.get(g.category_id ?? "") ?? "—"}`;
-    return `Producto: ${nombreProducto.get(g.product_id ?? "") ?? "—"}`;
+      return `Categoría: ${nombreCategoria.get(g.category_slug ?? "") ?? "—"}`;
+    return `Producto: ${nombreProducto.get(g.product_slug ?? "") ?? "—"}`;
   }
 
   return (
@@ -142,8 +142,8 @@ function AdminGastos() {
                           amount: String(num(g.amount)),
                           is_percentage: g.is_percentage,
                           scope: g.scope as typeof VACIO.scope,
-                          category_id: g.category_id ?? "",
-                          product_id: g.product_id ?? "",
+                          category_slug: g.category_slug ?? "",
+                          product_slug: g.product_slug ?? "",
                           active: g.active,
                           notes: g.notes ?? "",
                         })
@@ -241,13 +241,13 @@ function AdminGastos() {
                 <Label htmlFor="cat">Categoría</Label>
                 <select
                   id="cat"
-                  value={form.category_id}
-                  onChange={(e) => setForm({ ...form, category_id: e.target.value })}
+                  value={form.category_slug}
+                  onChange={(e) => setForm({ ...form, category_slug: e.target.value })}
                   className="h-10 w-full rounded-md border border-border bg-background px-3 text-sm"
                 >
                   <option value="">Selecciona…</option>
                   {categorias.map((c) => (
-                    <option key={c.id} value={c.id}>
+                    <option key={c.id} value={c.slug}>
                       {c.name}
                     </option>
                   ))}
@@ -259,13 +259,13 @@ function AdminGastos() {
                 <Label htmlFor="prod">Producto</Label>
                 <select
                   id="prod"
-                  value={form.product_id}
-                  onChange={(e) => setForm({ ...form, product_id: e.target.value })}
+                  value={form.product_slug}
+                  onChange={(e) => setForm({ ...form, product_slug: e.target.value })}
                   className="h-10 w-full rounded-md border border-border bg-background px-3 text-sm"
                 >
                   <option value="">Selecciona…</option>
                   {productos.map((p) => (
-                    <option key={p.id} value={p.id}>
+                    <option key={p.id} value={p.slug}>
                       {p.name}
                     </option>
                   ))}

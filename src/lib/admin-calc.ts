@@ -5,7 +5,7 @@
 
 export type Economia = {
   id: string;
-  product_id: string;
+  product_slug: string;
   sku: string | null;
   vat_rate: number;
   cost_materials: number;
@@ -27,15 +27,15 @@ export type Gasto = {
   amount: number;
   is_percentage: boolean;
   scope: string;
-  category_id: string | null;
-  product_id: string | null;
+  category_slug: string | null;
+  product_slug: string | null;
   active: boolean;
   notes: string | null;
 };
 
 export type Tramo = {
   id: string;
-  product_id: string;
+  product_slug: string;
   min_qty: number;
   max_qty: number | null;
   unit_cost: number;
@@ -101,12 +101,12 @@ export function costeSegunCantidad(base: number, tramos: Tramo[], cantidad: numb
   return aplicable ? num(aplicable.unit_cost) : base;
 }
 
-export function gastosAplicables(gastos: Gasto[], productId: string, categoryId: string): Gasto[] {
+export function gastosAplicables(gastos: Gasto[], productSlug: string, categorySlug: string): Gasto[] {
   return gastos.filter((g) => {
     if (!g.active) return false;
     if (g.scope === "global") return true;
-    if (g.scope === "categoria") return g.category_id === categoryId;
-    if (g.scope === "producto") return g.product_id === productId;
+    if (g.scope === "categoria") return g.category_slug === categorySlug;
+    if (g.scope === "producto") return g.product_slug === productSlug;
     return false;
   });
 }

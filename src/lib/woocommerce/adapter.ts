@@ -10,7 +10,6 @@
  */
 
 import type { WooProduct, WooCategory } from "./types";
-import { getDemoPrice } from "./demo-prices";
 
 /**
  * Limpia etiquetas HTML de un texto
@@ -42,6 +41,8 @@ export type Producto = {
   featured: boolean;
   category_id: string;
   image: string | null; // URL de la primera imagen de WooCommerce
+  stock_quantity: number | null; // null = WooCommerce no gestiona el stock de este producto
+  disponible: boolean; // precio real > 0 y stock_status distinto de "outofstock"
 };
 
 /**
@@ -90,44 +91,34 @@ export function adaptarProductoWooCommerce(
     );
   }
 
-  // Convertir precio: string → number
-  // Prioridad: Precio real WooCommerce > Precio Demo > 0 (fallback)
+  // Precio: solo el precio real de WooCommerce. Nunca se usa un precio demo
+  // como sustituto: si Woo no tiene precio, el producto queda no disponible.
   let priceNumber: number = 0;
-
-  const priceStr = wooProd.price || "";
-
-  // PASO 1: Intentar obtener precio real de WooCommerce
-  if (priceStr && priceStr.trim()) {
-    try {
-      priceNumber = parseFloat(priceStr);
-      if (isNaN(priceNumber)) {
-        console.warn(
-          `[Adapter] Precio inválido para "${wooProd.name}" (ID: ${wooProd.id}): "${priceStr}"`
-        );
-        priceNumber = 0;
-      }
-    } catch (err) {
+  const priceStr = (wooProd.price || "").trim();
+  if (priceStr) {
+    const parsed = parseFloat(priceStr);
+    if (isNaN(parsed)) {
       console.warn(
-        `[Adapter] Error al convertir precio para "${wooProd.name}" (ID: ${wooProd.id}): "${priceStr}"`
-      );
-      priceNumber = 0;
-    }
-  }
-
-  // PASO 2: Si no hay precio real, intentar precio DEMO
-  if (priceNumber === 0) {
-    const demoPrice = getDemoPrice(wooProd.id);
-    if (demoPrice !== null) {
-      priceNumber = demoPrice;
-      console.warn(
-        `[Adapter] Producto "${wooProd.name}" (ID: ${wooProd.id}) usando precio DEMO: ${demoPrice}€ (WooCommerce no tiene precio real)`
+        `[Adapter] Precio inválido para "${wooProd.name}" (ID: ${wooProd.id}): "${priceStr}"`
       );
     } else {
-      console.warn(
-        `[Adapter] Producto "${wooProd.name}" (ID: ${wooProd.id}) sin precio real ni demo → usando 0€`
-      );
+      priceNumber = parsed;
     }
   }
+  if (priceNumber <= 0) {
+    console.warn(
+      `[Adapter] Producto "${wooProd.name}" (ID: ${wooProd.id}) sin precio en WooCommerce → no disponible`
+    );
+  }
+
+  // Stock: WooCommerce indica si gestiona cantidad (stock_quantity) y el estado
+  const stockQuantity =
+    typeof wooProd.stock_quantity === "number" ? wooProd.stock_quantity : null;
+  const stockStatus = wooProd.stock_status || "instock";
+  const disponible =
+    priceNumber > 0 &&
+    stockStatus !== "outofstock" &&
+    (stockQuantity === null || stockQuantity > 0);
 
   // Determinar category_id (usar primera categoría)
   // Preservar todas las categorías en metadatos
@@ -168,6 +159,8 @@ export function adaptarProductoWooCommerce(
     featured: wooProd.featured ?? false,
     category_id: categoryId,
     image: imageUrl,
+    stock_quantity: stockQuantity,
+    disponible,
 
     // Metadatos de WooCommerce preservados para fases posteriores
     _woo: {

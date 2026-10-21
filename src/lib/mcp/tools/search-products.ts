@@ -1,6 +1,6 @@
 import { defineTool } from "@lovable.dev/mcp-js";
 import { z } from "zod";
-import { supabaseAnon } from "../supabase";
+import { getCatalogo } from "@/lib/catalog.functions";
 
 export default defineTool({
   name: "search_products",
@@ -24,35 +24,43 @@ export default defineTool({
   },
   annotations: { readOnlyHint: true, idempotentHint: true, openWorldHint: false },
   handler: async ({ query, category_slug, limit }) => {
-    const supabase = supabaseAnon();
-    let categoryId: string | undefined;
+    const { categories, products } = await getCatalogo();
+    let categoryIds: Set<string> | undefined;
     if (category_slug) {
-      const { data: cat } = await supabase
-        .from("categories")
-        .select("id")
-        .eq("slug", category_slug)
-        .maybeSingle();
+      const cat = categories.find((c) => c.slug === category_slug);
       if (!cat) {
         return {
           content: [{ type: "text", text: `No existe la categoría "${category_slug}".` }],
           isError: true,
         };
       }
-      categoryId = cat.id;
+      categoryIds = new Set([cat.id, ...categories.filter((c) => c.parent_id === cat.id).map((c) => c.id)]);
     }
 
-    let q = supabase
-      .from("products")
-      .select("slug, name, price, description, featured, category_id")
-      .limit(limit ?? 20);
-    if (categoryId) q = q.eq("category_id", categoryId);
-    if (query) q = q.or(`name.ilike.%${query}%,description.ilike.%${query}%`);
+    const needle = query?.toLowerCase();
+    const data = products
+      .filter((p) => !categoryIds || categoryIds.has(p.category_id))
+      .filter(
+        (p) =>
+          !needle ||
+          p.name.toLowerCase().includes(needle) ||
+          (p.description ?? "").toLowerCase().includes(needle),
+      )
+      .slice(0, limit ?? 20)
+      .map((p) => ({
+        slug: p.slug,
+        name: p.name,
+        price: p.price,
+        description: p.description,
+        featured: p.featured,
+        category_id: p.category_id,
+        disponible: p.disponible,
+        stock_quantity: p.stock_quantity,
+      }));
 
-    const { data, error } = await q;
-    if (error) return { content: [{ type: "text", text: error.message }], isError: true };
     return {
-      content: [{ type: "text", text: JSON.stringify(data ?? []) }],
-      structuredContent: { products: data ?? [] },
+      content: [{ type: "text", text: JSON.stringify(data) }],
+      structuredContent: { products: data },
     };
   },
 });

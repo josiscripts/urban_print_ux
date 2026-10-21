@@ -1,13 +1,17 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
+import { getCatalogo } from "@/lib/catalog.functions";
 
 /**
  * Funciones del panel de administración.
+ * Catálogo (productos, categorías, stock y precios) desde WooCommerce.
+ * Costes, tramos y gastos en Supabase, indexados por slug del producto
+ * (product_slug) y de la categoría (category_slug).
  * De momento sin protección de acceso (pendiente de configurar).
  */
 
 const economiaSchema = z.object({
-  product_id: z.string().uuid(),
+  product_slug: z.string().min(1).max(160),
   sku: z.string().max(60).nullable().optional(),
   vat_rate: z.number().min(0).max(100),
   cost_materials: z.number().min(0),
@@ -29,14 +33,14 @@ const gastoSchema = z.object({
   amount: z.number().min(0),
   is_percentage: z.boolean(),
   scope: z.enum(["global", "categoria", "producto"]),
-  category_id: z.string().uuid().nullable().optional(),
-  product_id: z.string().uuid().nullable().optional(),
+  category_slug: z.string().min(1).max(160).nullable().optional(),
+  product_slug: z.string().min(1).max(160).nullable().optional(),
   active: z.boolean(),
   notes: z.string().max(300).nullable().optional(),
 });
 
 const tramoSchema = z.object({
-  product_id: z.string().uuid(),
+  product_slug: z.string().min(1).max(160),
   min_qty: z.number().int().min(1),
   max_qty: z.number().int().min(1).nullable().optional(),
   unit_cost: z.number().min(0),
@@ -60,15 +64,10 @@ function total(row: Record<string, unknown> | null | undefined): number {
 
 export const getAdminData = createServerFn({ method: "GET" }).handler(async () => {
   const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-  const [products, categories, economics, tiers, expenses, history, items] = await Promise.all([
-    supabaseAdmin
-      .from("products")
-      .select("id, slug, name, price, category_id, featured")
-      .order("position"),
-    supabaseAdmin
-      .from("categories")
-      .select("id, slug, name, parent_id, position")
-      .order("position"),
+  // Catálogo en vivo desde WooCommerce; si Woo falla, la carga del admin falla.
+  const catalogo = await getCatalogo();
+  const slugCategoria = new Map(catalogo.categories.map((c) => [c.id, c.slug]));
+  const [economics, tiers, expenses, history, items] = await Promise.all([
     supabaseAdmin.from("product_economics").select("*"),
     supabaseAdmin.from("product_cost_tiers").select("*").order("min_qty"),
     supabaseAdmin.from("admin_expenses").select("*").order("created_at"),
@@ -85,8 +84,24 @@ export const getAdminData = createServerFn({ method: "GET" }).handler(async () =
   ]);
 
   return {
-    products: products.data ?? [],
-    categories: categories.data ?? [],
+    products: catalogo.products.map((p) => ({
+      id: p.id,
+      slug: p.slug,
+      name: p.name,
+      price: p.price,
+      category_id: p.category_id,
+      category_slug: slugCategoria.get(p.category_id) ?? null,
+      featured: p.featured,
+      stock_quantity: p.stock_quantity,
+      disponible: p.disponible,
+    })),
+    categories: catalogo.categories.map((c) => ({
+      id: c.id,
+      slug: c.slug,
+      name: c.name,
+      parent_id: c.parent_id,
+      position: c.position,
+    })),
     economics: economics.data ?? [],
     tiers: tiers.data ?? [],
     expenses: expenses.data ?? [],
@@ -104,14 +119,14 @@ export const saveProductEconomics = createServerFn({ method: "POST" })
     const { data: previa } = await supabaseAdmin
       .from("product_economics")
       .select("*")
-      .eq("product_id", fila.product_id)
+      .eq("product_slug", fila.product_slug)
       .maybeSingle();
 
     const { data: guardada, error } = await supabaseAdmin
       .from("product_economics")
       .upsert(
         { ...fila, sku: fila.sku ?? null, notes: fila.notes ?? null },
-        { onConflict: "product_id" },
+        { onConflict: "product_slug" },
       )
       .select("*")
       .single();
@@ -121,7 +136,7 @@ export const saveProductEconomics = createServerFn({ method: "POST" })
     const nuevo = total(guardada);
     if (Math.abs(anterior - nuevo) > 0.0001) {
       await supabaseAdmin.from("product_cost_history").insert({
-        product_id: fila.product_id,
+        product_slug: fila.product_slug,
         previous_total: anterior,
         new_total: nuevo,
         reason: reason ?? null,
@@ -140,8 +155,8 @@ export const saveExpense = createServerFn({ method: "POST" })
       amount: data.amount,
       is_percentage: data.is_percentage,
       scope: data.scope,
-      category_id: data.scope === "categoria" ? (data.category_id ?? null) : null,
-      product_id: data.scope === "producto" ? (data.product_id ?? null) : null,
+      category_slug: data.scope === "categoria" ? (data.category_slug ?? null) : null,
+      product_slug: data.scope === "producto" ? (data.product_slug ?? null) : null,
       active: data.active,
       notes: data.notes ?? null,
     };
@@ -173,7 +188,7 @@ export const saveTier = createServerFn({ method: "POST" })
   .handler(async ({ data }) => {
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const { error } = await supabaseAdmin.from("product_cost_tiers").insert({
-      product_id: data.product_id,
+      product_slug: data.product_slug,
       min_qty: data.min_qty,
       max_qty: data.max_qty ?? null,
       unit_cost: data.unit_cost,

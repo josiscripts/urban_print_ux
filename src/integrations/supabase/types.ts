@@ -61,6 +61,8 @@ export type Database = {
       };
       admin_expenses: {
         Row: {
+          category_slug: string | null
+          product_slug: string | null
           active: boolean;
           amount: number;
           category_id: string | null;
@@ -75,6 +77,8 @@ export type Database = {
           updated_at: string;
         };
         Insert: {
+          category_slug?: string | null
+          product_slug?: string | null
           active?: boolean;
           amount?: number;
           category_id?: string | null;
@@ -89,6 +93,8 @@ export type Database = {
           updated_at?: string;
         };
         Update: {
+          category_slug?: string | null
+          product_slug?: string | null
           active?: boolean;
           amount?: number;
           category_id?: string | null;
@@ -302,27 +308,30 @@ export type Database = {
       };
       product_cost_history: {
         Row: {
+          product_slug: string | null
           created_at: string;
           id: string;
           new_total: number;
           previous_total: number;
-          product_id: string;
+          product_id: string | null;
           reason: string | null;
         };
         Insert: {
+          product_slug?: string | null
           created_at?: string;
           id?: string;
           new_total?: number;
           previous_total?: number;
-          product_id: string;
+          product_id?: string | null;
           reason?: string | null;
         };
         Update: {
+          product_slug?: string | null
           created_at?: string;
           id?: string;
           new_total?: number;
           previous_total?: number;
-          product_id?: string;
+          product_id?: string | null;
           reason?: string | null;
         };
         Relationships: [
@@ -337,27 +346,30 @@ export type Database = {
       };
       product_cost_tiers: {
         Row: {
+          product_slug: string | null
           created_at: string;
           id: string;
           max_qty: number | null;
           min_qty: number;
-          product_id: string;
+          product_id: string | null;
           unit_cost: number;
         };
         Insert: {
+          product_slug?: string | null
           created_at?: string;
           id?: string;
           max_qty?: number | null;
           min_qty?: number;
-          product_id: string;
+          product_id?: string | null;
           unit_cost?: number;
         };
         Update: {
+          product_slug?: string | null
           created_at?: string;
           id?: string;
           max_qty?: number | null;
           min_qty?: number;
-          product_id?: string;
+          product_id?: string | null;
           unit_cost?: number;
         };
         Relationships: [
@@ -372,6 +384,7 @@ export type Database = {
       };
       product_economics: {
         Row: {
+          product_slug: string | null
           cost_handling: number;
           cost_labor: number;
           cost_materials: number;
@@ -383,12 +396,13 @@ export type Database = {
           created_at: string;
           id: string;
           notes: string | null;
-          product_id: string;
+          product_id: string | null;
           sku: string | null;
           updated_at: string;
           vat_rate: number;
         };
         Insert: {
+          product_slug?: string | null
           cost_handling?: number;
           cost_labor?: number;
           cost_materials?: number;
@@ -400,12 +414,13 @@ export type Database = {
           created_at?: string;
           id?: string;
           notes?: string | null;
-          product_id: string;
+          product_id?: string | null;
           sku?: string | null;
           updated_at?: string;
           vat_rate?: number;
         };
         Update: {
+          product_slug?: string | null
           cost_handling?: number;
           cost_labor?: number;
           cost_materials?: number;
@@ -417,7 +432,7 @@ export type Database = {
           created_at?: string;
           id?: string;
           notes?: string | null;
-          product_id?: string;
+          product_id?: string | null;
           sku?: string | null;
           updated_at?: string;
           vat_rate?: number;

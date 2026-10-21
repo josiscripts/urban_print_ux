@@ -94,7 +94,7 @@ function AdminProductos() {
       for (const campo of CAMPOS_COSTE) costes[campo.key] = Number(form[campo.key]) || 0;
       await guardar({
         data: {
-          product_id: seleccion.id,
+          product_slug: seleccion.slug,
           sku: form.sku.trim() || null,
           vat_rate: Number(form.vat_rate) || 0,
           ...costes,

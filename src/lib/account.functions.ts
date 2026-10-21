@@ -166,8 +166,18 @@ export const crearPedido = createServerFn({ method: "POST" })
     const bySlug = new Map(catalogo.products.map((p) => [p.slug, p]));
     if (slugs.some((slug) => !bySlug.has(slug)))
       throw new Error("Algún producto del carrito no existe.");
-    if (slugs.some((slug) => !(bySlug.get(slug)!.price > 0)))
-      throw new Error("Algún producto del carrito no tiene precio disponible.");
+    const cantidadPorSlug = new Map<string, number>();
+    for (const i of data.items)
+      cantidadPorSlug.set(i.slug, (cantidadPorSlug.get(i.slug) ?? 0) + i.quantity);
+    for (const [slug, cantidad] of cantidadPorSlug) {
+      const producto = bySlug.get(slug)!;
+      if (!producto.disponible)
+        throw new Error(`"${producto.name}" no está disponible en este momento.`);
+      if (producto.stock_quantity !== null && cantidad > producto.stock_quantity)
+        throw new Error(
+          `Solo quedan ${producto.stock_quantity} unidades de "${producto.name}".`,
+        );
+    }
 
     const lines = data.items.map((i) => {
       const product = bySlug.get(i.slug)!;

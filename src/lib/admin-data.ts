@@ -59,11 +59,11 @@ export function construirFilas(
   const { from, to } = rangoPeriodo(periodo, desde, hasta);
   const catNombre = new Map(data.categories.map((c) => [c.id, c.name]));
   const ecoPorProducto = new Map(
-    (data.economics as unknown as Economia[]).map((e) => [e.product_id, e]),
+    (data.economics as unknown as Economia[]).map((e) => [e.product_slug, e]),
   );
   const tramosPorProducto = new Map<string, Tramo[]>();
   for (const t of data.tiers as unknown as Tramo[]) {
-    tramosPorProducto.set(t.product_id, [...(tramosPorProducto.get(t.product_id) ?? []), t]);
+    tramosPorProducto.set(t.product_slug, [...(tramosPorProducto.get(t.product_slug) ?? []), t]);
   }
 
   const ventasPorSlug = new Map<string, { unidades: number; importe: number }>();
@@ -78,11 +78,11 @@ export function construirFilas(
   }
 
   return data.products.map((p) => {
-    const economia = ecoPorProducto.get(p.id) ?? null;
-    const tramos = tramosPorProducto.get(p.id) ?? [];
+    const economia = ecoPorProducto.get(p.slug) ?? null;
+    const tramos = tramosPorProducto.get(p.slug) ?? [];
     const iva = economia ? num(economia.vat_rate) : 21;
     const coste = costeTotal(economia);
-    const gastos = gastosAplicables(data.expenses as unknown as Gasto[], p.id, p.category_id);
+    const gastos = gastosAplicables(data.expenses as unknown as Gasto[], p.slug, p.category_slug ?? "");
     const resultado = calcular({
       precioConIva: num(p.price),
       ivaRate: iva,

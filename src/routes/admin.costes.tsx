@@ -38,14 +38,14 @@ function AdminCostes() {
   const [tramo, setTramo] = useState({ min: "1", max: "", coste: "" });
   const [cantidad, setCantidad] = useState("1");
 
-  const historial = (data?.history ?? []).filter((h) => h.product_id === seleccion?.id);
+  const historial = (data?.history ?? []).filter((h) => h.product_slug === seleccion?.slug);
 
   async function anadirTramo() {
     if (!seleccion) return;
     try {
       await crearTramo({
         data: {
-          product_id: seleccion.id,
+          product_slug: seleccion.slug,
           min_qty: Number(tramo.min) || 1,
           max_qty: tramo.max.trim() ? Number(tramo.max) : null,
           unit_cost: Number(tramo.coste) || 0,
