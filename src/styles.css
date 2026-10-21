@@ -1,0 +1,412 @@
+@import "tailwindcss" source(none);
+@source "../src";
+@import "tw-animate-css";
+
+@custom-variant dark (&:is(.dark *));
+
+/*
+ * Design system definition.
+ *
+ * The @theme inline block maps CSS custom properties to Tailwind utility
+ * classes (e.g. --color-primary -> bg-primary, text-primary).
+ *
+ * The :root and .dark blocks define the actual color values using oklch.
+ * All colors MUST use oklch format.
+ *
+ * To add a new semantic color:
+ * 1. Add the variable to :root (light value) and .dark (dark value)
+ * 2. Register it in @theme inline as --color-<name>: var(--<name>)
+ */
+
+@theme inline {
+  --radius-sm: calc(var(--radius) - 4px);
+  --radius-md: calc(var(--radius) - 2px);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) + 4px);
+  --radius-2xl: calc(var(--radius) + 8px);
+  --radius-3xl: calc(var(--radius) + 12px);
+  --radius-4xl: calc(var(--radius) + 16px);
+  --font-display: "Oswald", "Arial Narrow", sans-serif;
+  --font-sans: "Barlow", system-ui, sans-serif;
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-ring-offset-background: var(--background);
+  --color-ink: var(--ink);
+  --color-ink-foreground: var(--ink-foreground);
+  --color-ink-muted: var(--ink-muted);
+  --color-hero-surface: var(--hero-surface);
+  --color-hero-panel: var(--hero-panel);
+  --color-hero-black: var(--hero-black);
+  --color-nature: var(--nature);
+  --color-nature-strong: var(--nature-strong);
+  --color-nature-foreground: var(--nature-foreground);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+}
+
+:root {
+  --radius: 0.25rem;
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.16 0 0);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.16 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.16 0 0);
+  --primary: oklch(0.56 0.229 28.5);
+  --primary-foreground: oklch(1 0 0);
+  --secondary: oklch(0.16 0 0);
+  --secondary-foreground: oklch(1 0 0);
+  --muted: oklch(0.968 0 0);
+  --muted-foreground: oklch(0.48 0 0);
+  --accent: oklch(0.96 0.02 28.5);
+  --accent-foreground: oklch(0.16 0 0);
+  --destructive: oklch(0.56 0.229 28.5);
+  --destructive-foreground: oklch(1 0 0);
+  --border: oklch(0.9 0 0);
+  --input: oklch(0.88 0 0);
+  --ring: oklch(0.56 0.229 28.5);
+  --ink: oklch(0.13 0 0);
+  --ink-foreground: oklch(0.99 0 0);
+  --ink-muted: oklch(0.72 0 0);
+  --hero-surface: oklch(0.105 0.006 250);
+  --hero-panel: oklch(0.145 0.008 250);
+  --hero-black: oklch(0 0 0);
+  --nature: oklch(0.52 0.105 146);
+  --nature-strong: oklch(0.4 0.095 146);
+  --nature-foreground: oklch(0.98 0.018 145);
+  --chart-1: oklch(0.56 0.229 28.5);
+  --chart-2: oklch(0.16 0 0);
+  --chart-3: oklch(0.6 0 0);
+  --chart-4: oklch(0.8 0 0);
+  --chart-5: oklch(0.4 0 0);
+  --sidebar: oklch(0.13 0 0);
+  --sidebar-foreground: oklch(0.99 0 0);
+  --sidebar-primary: oklch(0.56 0.229 28.5);
+  --sidebar-primary-foreground: oklch(1 0 0);
+  --sidebar-accent: oklch(0.22 0 0);
+  --sidebar-accent-foreground: oklch(0.99 0 0);
+  --sidebar-border: oklch(0.28 0 0);
+  --sidebar-ring: oklch(0.56 0.229 28.5);
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border);
+  }
+
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+}
+
+@utility rule-red {
+  &::after {
+    content: "";
+    display: block;
+    width: 3.5rem;
+    height: 4px;
+    margin-top: 0.75rem;
+    background: var(--color-primary);
+  }
+}
+
+@utility micro-scale {
+  transition: transform 220ms ease-out;
+  transform-origin: center;
+  will-change: transform;
+
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      transform: scale(1.04);
+    }
+  }
+
+  &:active {
+    transform: scale(0.99);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    transition: none;
+
+    &:hover,
+    &:active {
+      transform: none;
+    }
+  }
+}
+
+@utility glass-navbar {
+  background-color: color-mix(in oklab, var(--hero-surface) 60%, transparent);
+  backdrop-filter: blur(16px) saturate(140%);
+  border-bottom: 1px solid color-mix(in oklab, var(--ink-foreground) 8%, transparent);
+  box-shadow: 0 6px 28px color-mix(in oklab, oklch(0 0 0) 30%, transparent);
+}
+
+@utility naturhouse-link {
+  position: relative;
+  isolation: isolate;
+  display: flex;
+  min-height: 3rem;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  overflow: hidden;
+  border: 1px solid color-mix(in oklab, var(--nature) 42%, transparent);
+  border-radius: 9999px;
+  background-color: color-mix(in oklab, var(--nature-strong) 16%, transparent);
+  padding: 0.75rem 1rem;
+  color: var(--nature-foreground);
+  font-family: var(--font-display);
+  font-size: 1rem;
+  text-transform: uppercase;
+  transition:
+    background-color 550ms cubic-bezier(0.22, 1, 0.36, 1),
+    border-color 550ms cubic-bezier(0.22, 1, 0.36, 1),
+    color 550ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 550ms cubic-bezier(0.22, 1, 0.36, 1);
+
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background: linear-gradient(110deg, var(--nature-strong), var(--nature));
+    opacity: 0;
+    transition: opacity 550ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  &:hover,
+  &:focus-visible,
+  &:active {
+    border-color: color-mix(in oklab, var(--nature) 84%, var(--nature-foreground));
+    color: var(--nature-foreground);
+    transform: scale(1.025);
+
+    &::before {
+      opacity: 1;
+    }
+
+    .naturhouse-leaf {
+      opacity: 0.9;
+      transform: translate3d(var(--leaf-x), var(--leaf-y), 0) rotate(var(--leaf-r)) scale(1);
+    }
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--nature-foreground);
+    outline-offset: 3px;
+  }
+}
+
+@utility naturhouse-link-compact {
+  min-height: 2.5rem;
+  width: auto;
+  gap: 0.45rem;
+  border-radius: 9999px;
+  padding: 0.5rem 1rem;
+  font-family: var(--font-sans);
+  font-size: 0.625rem;
+  font-weight: 700;
+}
+
+.naturhouse-leaves {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  pointer-events: none;
+}
+
+.naturhouse-leaf {
+  --leaf-x: 0;
+  --leaf-y: 0;
+  --leaf-r: 0deg;
+  position: absolute;
+  width: 1.1rem;
+  color: var(--nature);
+  opacity: 0;
+  filter: drop-shadow(0 2px 3px color-mix(in oklab, var(--hero-black) 38%, transparent));
+  transform: translate3d(0, 0, 0) rotate(0deg) scale(0.35);
+  transition:
+    opacity 380ms ease-out,
+    transform 620ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.naturhouse-link:hover .naturhouse-leaf,
+.naturhouse-link:focus-visible .naturhouse-leaf,
+.naturhouse-link:active .naturhouse-leaf {
+  opacity: 0.9;
+  transform: translate3d(var(--leaf-x), var(--leaf-y), 0) rotate(var(--leaf-r)) scale(1);
+}
+
+.leaf-a {
+  --leaf-x: 0.1rem;
+  --leaf-y: -0.25rem;
+  --leaf-r: -24deg;
+  top: 0.35rem;
+  left: 0.55rem;
+  width: 0.7rem;
+  transition-delay: 20ms;
+}
+.leaf-b {
+  --leaf-x: -0.1rem;
+  --leaf-y: -0.25rem;
+  --leaf-r: 24deg;
+  top: 0.35rem;
+  right: 0.55rem;
+  width: 0.68rem;
+  transition-delay: 80ms;
+}
+.leaf-c {
+  --leaf-x: -0.2rem;
+  --leaf-y: -0.05rem;
+  --leaf-r: -40deg;
+  top: 50%;
+  left: 0.45rem;
+  width: 0.62rem;
+  transition-delay: 130ms;
+}
+.leaf-d {
+  --leaf-x: 0.2rem;
+  --leaf-y: 0.05rem;
+  --leaf-r: 40deg;
+  top: 50%;
+  right: 0.45rem;
+  width: 0.66rem;
+  transition-delay: 180ms;
+}
+.leaf-e {
+  --leaf-x: 0.08rem;
+  --leaf-y: 0.22rem;
+  --leaf-r: 18deg;
+  bottom: 0.35rem;
+  left: 0.85rem;
+  width: 0.64rem;
+  transition-delay: 220ms;
+}
+.leaf-f {
+  --leaf-x: -0.08rem;
+  --leaf-y: 0.22rem;
+  --leaf-r: -18deg;
+  bottom: 0.35rem;
+  right: 0.85rem;
+  width: 0.68rem;
+  transition-delay: 270ms;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .naturhouse-link,
+  .naturhouse-link::before,
+  .naturhouse-leaf {
+    transition-duration: 0.01ms;
+  }
+
+  .naturhouse-link:hover,
+  .naturhouse-link:focus-visible,
+  .naturhouse-link:active {
+    transform: none;
+  }
+
+  .naturhouse-link:hover .naturhouse-leaf,
+  .naturhouse-link:focus-visible .naturhouse-leaf,
+  .naturhouse-link:active .naturhouse-leaf {
+    transform: none;
+  }
+}
+
+@utility hero-image-blend {
+  &::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    background:
+      linear-gradient(
+        90deg,
+        color-mix(in oklab, var(--hero-surface) 94%, transparent) 0%,
+        color-mix(in oklab, var(--hero-surface) 78%, transparent) 62%,
+        color-mix(in oklab, var(--hero-surface) 48%, transparent) 100%
+      ),
+      linear-gradient(
+        180deg,
+        color-mix(in oklab, var(--hero-surface) 28%, transparent),
+        color-mix(in oklab, var(--hero-surface) 58%, transparent)
+      );
+  }
+
+  @media (min-width: 64rem) {
+    &::before {
+      background:
+        linear-gradient(
+          90deg,
+          color-mix(in oklab, var(--hero-surface) 94%, transparent) 0%,
+          color-mix(in oklab, var(--hero-surface) 68%, transparent) 58%,
+          color-mix(in oklab, var(--hero-surface) 30%, transparent) 100%
+        ),
+        linear-gradient(
+          180deg,
+          color-mix(in oklab, var(--hero-surface) 22%, transparent),
+          color-mix(in oklab, var(--hero-surface) 45%, transparent)
+        );
+    }
+  }
+
+  @media (min-width: 80rem) {
+    &::before {
+      background:
+        linear-gradient(
+          90deg,
+          var(--hero-surface) 0%,
+          color-mix(in oklab, var(--hero-surface) 82%, transparent) 12%,
+          transparent 44%
+        ),
+        linear-gradient(
+          180deg,
+          color-mix(in oklab, var(--hero-surface) 25%, transparent),
+          color-mix(in oklab, var(--hero-surface) 36%, transparent)
+        );
+    }
+
+    clip-path: polygon(10% 0, 100% 0, 100% 100%, 0 100%);
+    margin-left: -10%;
+  }
+}
