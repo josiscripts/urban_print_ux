@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { createFileRoute, Link, Outlet } from "@tanstack/react-router";
+import { createFileRoute, Link, Outlet, redirect } from "@tanstack/react-router";
 import {
   BarChart3,
   Calculator,
@@ -13,8 +13,26 @@ import {
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { Logo } from "@/components/Logo";
+import { supabase } from "@/integrations/supabase/client";
 
 export const Route = createFileRoute("/admin")({
+  // La sesión vive en el navegador: la comprobación se hace solo en cliente.
+  // La protección real está en el middleware requireAdmin de las server functions.
+  ssr: false,
+  beforeLoad: async ({ location }) => {
+    const { data, error } = await supabase.auth.getUser();
+    if (error || !data.user) {
+      throw redirect({ to: "/auth", search: { next: location.href } });
+    }
+    const { data: rol } = await supabase
+      .from("user_roles")
+      .select("role")
+      .eq("user_id", data.user.id)
+      .eq("role", "admin")
+      .maybeSingle();
+    if (!rol) throw redirect({ to: "/" });
+    return { user: data.user };
+  },
   head: () => ({
     meta: [
       { title: "Panel Admin — Urban Print" },

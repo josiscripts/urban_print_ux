@@ -1,13 +1,14 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { getCatalogo } from "@/lib/catalog.functions";
+import { requireAdmin } from "@/lib/admin-auth";
 
 /**
  * Funciones del panel de administración.
  * Catálogo (productos, categorías, stock y precios) desde WooCommerce.
  * Costes, tramos y gastos en Supabase, indexados por slug del producto
  * (product_slug) y de la categoría (category_slug).
- * De momento sin protección de acceso (pendiente de configurar).
+ * Todas exigen sesión con rol "admin" (middleware requireAdmin).
  */
 
 const economiaSchema = z.object({
@@ -62,55 +63,58 @@ function total(row: Record<string, unknown> | null | undefined): number {
   return CAMPOS.reduce((acc, key) => acc + Number(row[key] ?? 0), 0);
 }
 
-export const getAdminData = createServerFn({ method: "GET" }).handler(async () => {
-  const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
-  // Catálogo en vivo desde WooCommerce; si Woo falla, la carga del admin falla.
-  const catalogo = await getCatalogo();
-  const slugCategoria = new Map(catalogo.categories.map((c) => [c.id, c.slug]));
-  const [economics, tiers, expenses, history, items] = await Promise.all([
-    supabaseAdmin.from("product_economics").select("*"),
-    supabaseAdmin.from("product_cost_tiers").select("*").order("min_qty"),
-    supabaseAdmin.from("admin_expenses").select("*").order("created_at"),
-    supabaseAdmin
-      .from("product_cost_history")
-      .select("*")
-      .order("created_at", { ascending: false })
-      .limit(200),
-    supabaseAdmin
-      .from("order_items")
-      .select("id, product_slug, product_name, unit_price, quantity, created_at, order_id")
-      .order("created_at", { ascending: false })
-      .limit(2000),
-  ]);
+export const getAdminData = createServerFn({ method: "GET" })
+  .middleware([requireAdmin])
+  .handler(async () => {
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    // Catálogo en vivo desde WooCommerce; si Woo falla, la carga del admin falla.
+    const catalogo = await getCatalogo();
+    const slugCategoria = new Map(catalogo.categories.map((c) => [c.id, c.slug]));
+    const [economics, tiers, expenses, history, items] = await Promise.all([
+      supabaseAdmin.from("product_economics").select("*"),
+      supabaseAdmin.from("product_cost_tiers").select("*").order("min_qty"),
+      supabaseAdmin.from("admin_expenses").select("*").order("created_at"),
+      supabaseAdmin
+        .from("product_cost_history")
+        .select("*")
+        .order("created_at", { ascending: false })
+        .limit(200),
+      supabaseAdmin
+        .from("order_items")
+        .select("id, product_slug, product_name, unit_price, quantity, created_at, order_id")
+        .order("created_at", { ascending: false })
+        .limit(2000),
+    ]);
 
-  return {
-    products: catalogo.products.map((p) => ({
-      id: p.id,
-      slug: p.slug,
-      name: p.name,
-      price: p.price,
-      category_id: p.category_id,
-      category_slug: slugCategoria.get(p.category_id) ?? null,
-      featured: p.featured,
-      stock_quantity: p.stock_quantity,
-      disponible: p.disponible,
-    })),
-    categories: catalogo.categories.map((c) => ({
-      id: c.id,
-      slug: c.slug,
-      name: c.name,
-      parent_id: c.parent_id,
-      position: c.position,
-    })),
-    economics: economics.data ?? [],
-    tiers: tiers.data ?? [],
-    expenses: expenses.data ?? [],
-    history: history.data ?? [],
-    items: items.data ?? [],
-  };
-});
+    return {
+      products: catalogo.products.map((p) => ({
+        id: p.id,
+        slug: p.slug,
+        name: p.name,
+        price: p.price,
+        category_id: p.category_id,
+        category_slug: slugCategoria.get(p.category_id) ?? null,
+        featured: p.featured,
+        stock_quantity: p.stock_quantity,
+        disponible: p.disponible,
+      })),
+      categories: catalogo.categories.map((c) => ({
+        id: c.id,
+        slug: c.slug,
+        name: c.name,
+        parent_id: c.parent_id,
+        position: c.position,
+      })),
+      economics: economics.data ?? [],
+      tiers: tiers.data ?? [],
+      expenses: expenses.data ?? [],
+      history: history.data ?? [],
+      items: items.data ?? [],
+    };
+  });
 
 export const saveProductEconomics = createServerFn({ method: "POST" })
+  .middleware([requireAdmin])
   .inputValidator((data: unknown) => economiaSchema.parse(data))
   .handler(async ({ data }) => {
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
@@ -146,6 +150,7 @@ export const saveProductEconomics = createServerFn({ method: "POST" })
   });
 
 export const saveExpense = createServerFn({ method: "POST" })
+  .middleware([requireAdmin])
   .inputValidator((data: unknown) => gastoSchema.parse(data))
   .handler(async ({ data }) => {
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
@@ -175,6 +180,7 @@ export const saveExpense = createServerFn({ method: "POST" })
   });
 
 export const deleteExpense = createServerFn({ method: "POST" })
+  .middleware([requireAdmin])
   .inputValidator((data: unknown) => z.object({ id: z.string().uuid() }).parse(data))
   .handler(async ({ data }) => {
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
@@ -184,6 +190,7 @@ export const deleteExpense = createServerFn({ method: "POST" })
   });
 
 export const saveTier = createServerFn({ method: "POST" })
+  .middleware([requireAdmin])
   .inputValidator((data: unknown) => tramoSchema.parse(data))
   .handler(async ({ data }) => {
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
@@ -198,6 +205,7 @@ export const saveTier = createServerFn({ method: "POST" })
   });
 
 export const deleteTier = createServerFn({ method: "POST" })
+  .middleware([requireAdmin])
   .inputValidator((data: unknown) => z.object({ id: z.string().uuid() }).parse(data))
   .handler(async ({ data }) => {
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
